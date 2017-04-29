@@ -1,0 +1,37 @@
+<div>
+   <div v-if="!moveSuccessful" class="ui warning message">
+      <div class="header">
+         Your Work Items could not be moved automatically. Please provide the required Mapping Information
+      </div>
+   </div>
+
+   <h3>Value Mappings</h3>
+   <fieldset v-for="attrDef in attributeDefinitions">
+      <legend :title="attrDef.identifier" :id="attrDef.identifier">{{ attrDef.displayName }}</legend>
+      <table class="ui celled table">
+         <thead>
+            <tr>
+               <th>Old Value</th>
+               <th>Suggested New Value</th>
+               <th>New Value</th>
+               <th>Affected Work Item</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr v-for="valMap in attrDef.valueMappings">
+               <td :title="valMap.originalValue.identifier"> {{ valMap.originalValue.displayName }}</td>
+               <td :title="valMap.differentNewValue.identifier"> {{ valMap.differentNewValue.displayName }}</td>
+               <td>
+                  <select v-model="valMap.chosen" options="attrDef.allowedValues | selectify 'displayName' 'identifier'" v-if="attrDef.allowedValues.length > 0">
+                     <option v-bind:value="val.identifier" :val="val.identifier" v-for="val in attrDef.allowedValues">
+                        {{hierarchify(val.displayName)}}
+                     </option>
+                  </select>
+                  <input v-model="valMap.chosen" v-else type="text" />
+               </td>
+               <td>{{ valMap.affectedWorkItems }}</td>
+            </tr>
+         </tbody>
+      </table>
+   </fieldset>
+</div>

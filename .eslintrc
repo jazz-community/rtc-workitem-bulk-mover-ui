@@ -1,0 +1,21 @@
+{
+   "parser": "vue-eslint-parser",
+   "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+   },
+   "plugins": [
+      "vue"
+   ],
+   "extends": [
+      "eslint:recommended",
+      "google"
+   ],
+   "rules": {
+      "indent": ["warn", 3],
+      "max-len": ["warn", 100],
+      "no-console": "off",
+      "linebreak-style": ["info", "windows"],
+      "react/jsx-sort-prop-types": "off"
+   }
+}

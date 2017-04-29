@@ -1,0 +1,60 @@
+<div>
+	<h1>Move Work Items between Project Areas</h1>
+
+	<div id="WIMoveArea">
+
+      <template v-if="query">
+         <span>Selected Query: '{{query.name}}'</span>
+         <button class="ui button small" v-on:click="clicky">Change</button>
+      </template>
+      <button v-else class="ui button small primary" v-on:click="clicky">Select a Query</button>
+      <br /><br />
+
+      <template v-if="wiTable.gridData && wiTable.gridData.length > 0">
+         <h3>Work Items</h3>
+         <wi-table
+            :work-items="wiTable.gridData"
+            :columns="wiTable.gridColumns"
+            :filter-key="wiTable.searchQuery">
+         </wi-table>
+      </template>
+
+      <template v-if="selected">
+         <h3>Target Project Area</h3>
+
+         <select v-model="targetProjectArea" v-bind:class="{ disabled: isLoading }" class="ui search dropdown">
+            <option v-for="pa in projectAreas">{{pa}}</option>
+         </select>
+         <br /><br />
+
+         <div v-if="attributeDefinitions.length > 0">
+            <wi-migrator
+               :attribute-definitions="attributeDefinitions"
+               :move-successful="moveSuccessful">
+            </wi-migrator>
+         </div>
+
+         <button v-bind:class="{ disabled: isDataMissing }" class="ui button primary" v-on:click="moveWorkItems">Move Work Items</button>
+         <div v-if="moveSuccessful" class="ui success message">
+            <div class="header">
+               Work Item Move Successful!
+            </div>
+            <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project are successfully.</p>
+         </div>
+         <div v-if="moveSuccessful === false && attributeDefinitions.length <= 0" class="ui error message">
+            <div class="header">
+               Work Item Move failed!
+            </div>
+            <p>Could not determine at least one of the specified Work Items. This might happen if you are trying to move a Work Item that has already been moved previously</p>
+         </div>
+      </template>
+
+      <div v-else class="ui warning message">
+         <div class="header">
+            No Work Items selected!
+         </div>
+      </div>
+	</div>
+</div>
+
+

@@ -1,0 +1,10 @@
+.classpath
+.jazzignore
+.project
+.settings
+bin
+deployment-properties.ini
+jbe-build-wrapper.xml
+node_modules
+resources/ui/**
+*.zip

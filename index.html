@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+   <head></head>
+   <body>
+      <h1>Work Item Bulk Mover</h1>
+      <div id="BulkMoverIndexContent"></div>
+
+      <script
+         data-dojo-config="async: true, packages: [
+            { name: 'com.siemens.bt.jazz.ui.WorkItemBulkMover', location: '/resources' }]"
+         src="./node_modules/dojo/dojo.js"></script>
+
+      <script type="text/javascript">
+         require(["com.siemens.bt.jazz.ui.WorkItemBulkMover/jazz/WorkItemBulkMover", "dojo/dom"], function(BulkMover, dom) {
+            var bm = new BulkMover();
+            // place the passed in widget into the page content section
+	         bm.placeAt(dom.byId("BulkMoverIndexContent")).startup();
+         });
+      </script>
+   </body>
+</html>
