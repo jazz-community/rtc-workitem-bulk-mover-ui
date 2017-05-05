@@ -34,5 +34,5 @@ Pull requests are very welcome.
 Copyright (c) Siemens AG. All rights reserved.<br>
 Licensed under the [MIT](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/blob/master/LICENSE) License.
 
-[travis-svg]: https://travis-ci.com/innerjoin/rtc-workitem-bulk-mover-ui.svg?token=ZLKF36p1Jj3sZsR3kyzz&branch=master
-[travis]: https://travis-ci.com/innerjoin/rtc-workitem-bulk-mover-ui
+[travis-svg]: https://travis-ci.org/jazz-community/rtc-workitem-bulk-mover-ui.svg?branch=master
+[travis]: https://travis-ci.org/jazz-community/rtc-workitem-bulk-mover-ui
