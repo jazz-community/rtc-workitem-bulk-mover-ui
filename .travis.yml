@@ -1,7 +1,13 @@
 language: node_js
 node_js:
  - 6
+addons:
+  sonarqube:
+    organization: "jazz-community"
+    token:
+      secure: "V/nTe+CLmA4Gem3Mf8N2v0q3dEqKxWcLPCD1kAMLpQOye38G2NZm0zBqwI1sc57kxeWRYrruJbLVnwzLa+MYStIDLabf3XQTjB8h1RWcIKNbY4aIBTpXFIXw2DDn2ppn4AfyXuLK9XzIjMT3ECa5OLyRRYWNFzfYS54rthktX2bvUUDXsbucZgxy3YjFlaJJ5+QvxuYvbT3Tb8cdIo3qWwj0GDSIFQgcFKihxtNYauZiJ+unLMUBxYi/LQaxblzp9+Y4ACkcMTt+62AXgWfKorNLEjVspLVSWH1Nh1mCMqqmGQBUtmWYngthWobYLpYp4utR6gT+FVAhhQZR351+utKj8PDlKFqSFrgXzhhHZF7sBTc/pn6wbdyvfYeHdGnofY1g5TJ1s9HfBBNAMH6cgs6SuRcGWPNQNRYH0P3vQa+O5ZjhOdrcmkOWj2ngxVsYI39B4msz3P6JcizXys0DDgppPkGlUV//xKCISeHLaNrvhipb3ek/HssYfPpAWaiypLvDr224OdmeUYNPMK4KdciegYOtfmAh+yPRKwWdDPHOfUAE4fhCeCJXKzuP6BU9sB5/GOgiW1Zg3Uj9eqohn/t83itR8i9MLxtgt4pFprlyAvxr99E4z/JFSyW8uSpuid6qDHuvCiYvtkq7QyjHJqYsJi8qlh74cFQKotjefXo="
 before_install:
  - npm install
 script:
  - npm run build
+ - sonar-scanner
