@@ -41,6 +41,15 @@
     "start": "webpack-dev-server --inline --hot --open --port 8080 --env.mode=dev",
     "test": "karma start ./karma.conf.js"
   },
-  "author": "Lukas Steiger | Copyright (c) 2017 Siemens Building Technologies",
-  "license": "MIT"
+  "author": "Lukas Steiger, Siemens AG",
+  "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/jazz-community/rtc-workitem-bulk-mover-ui.git"
+  },
+  "keywords": ["jazz", "rtc", "workitem"],
+  "homepage": "http://jazz-community.org",
+  "bugs": {
+    "url": "https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/issues"
+  }
 }
