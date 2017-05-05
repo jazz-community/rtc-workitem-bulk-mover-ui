@@ -21,5 +21,14 @@ Be reminded that this plug-in is still in heavy development and should not be co
 ## Setup Instructions
 This Project is the Client Side Extension of the Work Item Bulk Mover. There is also a server side extension which is required to be able to use this plug-in. As it needs some refactoring first, it is not published yet. As soon as it is, we will provide you with setup instructions.
 
+
+## Contributing
+Please use the [Issue Tracker](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/issues) of this repository to report issues or suggest enhancements.<br>
+Pull requests are very welcome.
+
+## Licensing
+Copyright (c) Siemens AG. All rights reserved.<br>
+Licensed under the [MIT](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/blob/master/LICENSE) License.
+
 [travis-svg]: https://travis-ci.com/innerjoin/rtc-workitem-bulk-mover-ui.svg?token=ZLKF36p1Jj3sZsR3kyzz&branch=master
 [travis]: https://travis-ci.com/innerjoin/rtc-workitem-bulk-mover-ui
