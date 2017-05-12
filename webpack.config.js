@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const DojoModuleWrapperPlugin = require('dojo-module-wrapper-webpack-plugin');
 const JazzUpdateSitePlugin = require('jazz-update-site-webpack-plugin');
 const packageJson = require('./package.json');
+const glob = require('glob');
 
 const modeConfig = {
    dev: {
@@ -19,20 +20,23 @@ module.exports = (env) => {
    const mode = modeConfig[env.mode] || modeConfig.dev;
    const version = env.buildUUID || packageJson.version;
 
+   const semanticPattern = glob.sync("./node_modules/semantic-ui-css/components/!(reset)*.min.+(css|js)");
+
    const config = {
       entry: {
-         app: './src/main',
+         BulkMover: './src/main',
+         Semantic: semanticPattern,
       },
       output: {
          // wrap external dependencies with an AMD loader
          libraryTarget: 'amd',
-         filename: 'resources/ui/BulkMoverBundle.js',
+         filename: 'resources/ui/[name]Bundle.js',
       },
       module: {
          rules: [{
             // include all project css files & Semantic UI, but not anything else from node_modules
             test: /\.css$/,
-            include: /node_modules(\/|\\)semantic-ui-css/,
+            include: /node_modules(\/|\\)semantic-ui-css(\/|\\)components/,
             use: [{
                loader: 'style-loader',
             }, {
@@ -74,8 +78,6 @@ module.exports = (env) => {
          alias: {
             'jquery': 'jquery/dist/jquery.min.js',
             'vue': 'vue/dist/vue.common.js',
-            'semantic': 'semantic-ui-css/semantic.js',
-            'semantic-css': 'semantic-ui-css/semantic.css',
          },
       },
 
@@ -90,7 +92,7 @@ module.exports = (env) => {
 
          // modify compiled bundle in a way that Jazz will be able to parse and execute it
          new DojoModuleWrapperPlugin({
-            app: {
+            BulkMover: {
                baseUrl: mode.baseUrl,
                moduleName: 'BulkMoverBundle',
             },

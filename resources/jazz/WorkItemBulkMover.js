@@ -3,7 +3,8 @@ define([
    "dijit/_WidgetBase",
    "dijit/_TemplatedMixin",
    "dojo/text!com.siemens.bt.jazz.ui.WorkItemBulkMover/jazz/WorkItemBulkMover.html",
-   "com.siemens.bt.jazz.ui.WorkItemBulkMover/ui/BulkMoverBundle"
+   "com.siemens.bt.jazz.ui.WorkItemBulkMover/ui/BulkMoverBundle",
+   "com.siemens.bt.jazz.ui.WorkItemBulkMover/ui/SemanticBundle"
 ], function(declare, _WidgetBase, _TemplatedMixin, template, BulkMoverBundle) {
    return declare("com.siemens.bt.jazz.ui.WorkItemBulkMover.jazz.WorkItemBulkMover", [_WidgetBase, _TemplatedMixin], {
 

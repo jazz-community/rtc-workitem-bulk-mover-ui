@@ -1,6 +1,4 @@
 import Vue from 'vue';
-import 'semantic';
-import 'semantic-css';
 
 import BulkMoverComponent from './components/bulk-mover';
 import {selectify} from './filters/index';
