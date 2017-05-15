@@ -20,7 +20,7 @@ module.exports = (env) => {
    const mode = modeConfig[env.mode] || modeConfig.dev;
    const version = env.buildUUID || packageJson.version;
 
-   const semanticPattern = glob.sync("./node_modules/semantic-ui-css/components/!(reset)*.min.+(css|js)");
+   const semanticPattern = glob.sync("./node_modules/semantic-ui-css/components/!(reset|site)*.min.+(css|js)");
 
    const config = {
       entry: {
