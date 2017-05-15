@@ -23,7 +23,7 @@
          <h3>Target Project Area</h3>
 
          <select v-model="targetProjectArea" v-bind:class="{ disabled: isLoading }" class="ui search dropdown">
-            <option v-for="pa in projectAreas">{{pa}}</option>
+            <option v-for="pa in projectAreas" :id="pa.id">{{pa.name}}</option>
          </select>
          <br /><br />
 
