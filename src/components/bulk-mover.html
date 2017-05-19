@@ -4,51 +4,56 @@
 
 	<div id="WIMoveArea">
 
-      <template v-if="query">
+      <button v-if="!query" class="ui button tiny primary" v-bind:class="{ loading: isQueryLoading }" v-on:click="loadQuery">Select a Query</button>
+      <template v-else>
          <h3>Selected Query</h3>
          <span>{{query.name}}</span>
-         <button style="margin-left: 20px" class="ui button mini" v-on:click="clicky">Change</button>
-      </template>
-      <button v-else class="ui button tiny primary" v-on:click="clicky">Select a Query</button>
-      <br /><br />
+         <button style="margin-left: 20px" class="ui button mini" v-bind:class="{ loading: isQueryLoading }" v-on:click="loadQuery">Change</button>
 
-      <template v-if="wiTable.gridData && wiTable.gridData.length > 0">
-         <h3>Work Items</h3>
-         <wi-table
-            :work-items="wiTable.gridData"
-            :columns="wiTable.gridColumns"
-            :filter-key="wiTable.searchQuery">
-         </wi-table>
-      </template>
+         <template v-if="wiTable.gridData && wiTable.gridData.length > 0">
+            <h3>Work Items</h3>
+            <wi-table
+               :work-items="wiTable.gridData"
+               :columns="wiTable.gridColumns"
+               :filter-key="wiTable.searchQuery">
+            </wi-table>
+         </template>
 
-      <template v-if="selected">
-         <h3>Target Project Area</h3>
-
-         <select v-model="targetProjectArea" v-bind:class="{ disabled: isLoading }" class="ui search dropdown">
-            <option v-for="pa in projectAreas" :id="pa.id">{{pa.name}}</option>
-         </select>
-         <br /><br />
-
-         <div v-if="attributeDefinitions.length > 0">
-            <wi-migrator
-               :attribute-definitions="attributeDefinitions"
-               :move-successful="moveSuccessful">
-            </wi-migrator>
-         </div>
-
-         <button v-bind:class="{ disabled: isDataMissing }" class="ui button primary" v-on:click="moveWorkItems">Move Work Items</button>
-         <div v-if="moveSuccessful" class="ui success message">
+         <div v-else class="ui warning message">
             <div class="header">
-               Work Item Move Successful!
+               The query did not return any result
             </div>
-            <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project are successfully.</p>
          </div>
-         <div v-if="moveSuccessful === false && attributeDefinitions.length <= 0" class="ui error message">
-            <div class="header">
-               Work Item Move failed!
+
+         <template v-if="selected">
+            <h3>Target Project Area</h3>
+
+            <select v-model="targetProjectArea" v-bind:class="{ disabled: isLoading }" class="ui search dropdown">
+               <option v-for="pa in projectAreas" :id="pa.id">{{pa.name}}</option>
+            </select>
+            <br /><br />
+
+            <div v-if="attributeDefinitions.length > 0">
+               <wi-migrator
+                  :attribute-definitions="attributeDefinitions"
+                  :move-successful="moveSuccessful">
+               </wi-migrator>
             </div>
-            <p>Could not determine at least one of the specified Work Items. This might happen if you are trying to move a Work Item that has already been moved previously</p>
-         </div>
+
+            <button v-bind:class="{ disabled: isDataMissing, loading: isQueryLoading }" class="ui button primary" v-on:click="moveWorkItems">Move Work Items</button>
+            <div v-if="moveSuccessful" class="ui success message">
+               <div class="header">
+                  Work Item Move Successful!
+               </div>
+               <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project are successfully.</p>
+            </div>
+            <div v-if="moveSuccessful === false && attributeDefinitions.length <= 0" class="ui error message">
+               <div class="header">
+                  Work Item Move failed!
+               </div>
+               <p>Could not determine at least one of the specified Work Items. This might happen if you are trying to move a Work Item that has already been moved previously</p>
+            </div>
+         </template>
       </template>
 	</div>
 </div>

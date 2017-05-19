@@ -36,6 +36,7 @@ const BulkMoverComponent = Vue.extend({
          projectAreas: [],
          mappings: [],
          moveSuccessful: null,
+         loadInProgress: false,
       };
    },
 
@@ -44,8 +45,7 @@ const BulkMoverComponent = Vue.extend({
    },
 
    mounted() {
-      const domObj = dom.byId('WIMoveArea');
-      parser.parse(domObj);
+      parser.parse(dom.byId('WIMoveArea'));
    },
 
    computed: {
@@ -58,6 +58,9 @@ const BulkMoverComponent = Vue.extend({
          return this.wiTable.gridData.length > 0 && this.wiTable.gridData
             .filter((x) => x.checked);
       },
+      isQueryLoading: function() {
+         return this.loadInProgress;
+      },
       isLoading: function() {
          return this.projectAreas.length <= 0;
       },
@@ -69,6 +72,7 @@ const BulkMoverComponent = Vue.extend({
 
    methods: {
       readProjectAreas() {
+         this.loadInProgress = true;
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/project-areas`;
@@ -77,10 +81,11 @@ const BulkMoverComponent = Vue.extend({
             headers: {"Accept": "application/json"}
          }).then((retData) => {
             this.projectAreas = retData;
+            this.loadInProgress = false;
          });
       },
 
-      clicky() {
+      loadQuery() {
          JazzHelpers.getQueryDialog(this.querySelected);
       },
 
@@ -109,6 +114,7 @@ const BulkMoverComponent = Vue.extend({
       },
 
       tryMove(workItems, projectArea, attributeDefinitions) {
+         this.loadInProgress = true;
          const data = {
             targetProjectArea: projectArea,
             workItems: workItems,
@@ -124,7 +130,6 @@ const BulkMoverComponent = Vue.extend({
                'Content-Type': 'json',
             },
          }).then((retData) => {
-            console.log('move data: ', retData);
             if(retData.successful && retData.mapping.length > 0) {
                this.moveSuccessful = true;
                this.attributeDefinitions = [];
@@ -132,6 +137,7 @@ const BulkMoverComponent = Vue.extend({
                this.moveSuccessful = false;
                this.attributeDefinitions = retData.mapping;
             }
+            this.loadInProgress = false;
          }, (err) => {
             console.log('err: ', err);
             this.moveSuccessful = false;
