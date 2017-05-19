@@ -1,0 +1,25 @@
+.attr-mappings {
+   box-sizing: border-box;
+}
+
+.attr-mappings {
+   padding: 10px;
+   width: 100%;
+   border: 1px solid rgba(34,36,38,.6);
+   border-radius: 4px;
+   margin-bottom: 25px;
+}
+
+.attr-mappings > table {
+   margin-top: 0px !important;
+}
+
+.attr-mappings > legend {
+   padding: 8px;
+   font-weight: bold;
+}
+
+.attr-mappings fieldset th {
+   width: 270px;
+   font-weight: bold;
+}

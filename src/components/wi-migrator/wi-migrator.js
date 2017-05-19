@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import template from './wi-migrator.html';
+import style from './wi-migrator.scss';
 
 const WorkItemMigratorComponent = Vue.extend({
+   style,
    template,
    components: {},
    props: {

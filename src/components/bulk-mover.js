@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import xhr from 'dojo/request/xhr';
 import template from './bulk-mover.html';
+import style from './bulk-mover.scss';
 import JazzHelpers from './jazz-helpers/jazz-helpers';
 import '../styles/ui.scss';
 import parser from 'dojo/parser';
@@ -9,6 +10,7 @@ import WorkItemTableComponent from './wi-table/wi-table';
 import WorkItemMigratorComponent from './wi-migrator/wi-migrator';
 
 const BulkMoverComponent = Vue.extend({
+   style,
    template,
    components: {
       'wi-table': WorkItemTableComponent,
@@ -25,7 +27,6 @@ const BulkMoverComponent = Vue.extend({
             searchQuery: '',
             gridColumns: {
                id: {name: 'Id', data: (data) => {
-                  console.log(data);
                   return `<a target="_blank" href="${data.uri}">${data.id}</a>` ;
                }},
                description: {name: 'Title', data: (data) => {return data.description;}}
