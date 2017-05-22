@@ -19,7 +19,7 @@
             </wi-table>
          </template>
 
-         <div v-else class="ui warning message">
+         <div v-if="!wiTable.gridData && !isQueryLoading" class="ui warning message">
             <div class="header">
                The query did not return any result
             </div>
