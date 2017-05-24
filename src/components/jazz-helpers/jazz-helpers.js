@@ -14,6 +14,10 @@ export default class JazzHelpers {
       return (url && url.length > 0) ? url : 'https://localhost:7443/jazz';
    }
 
+   static getWorkItemUri(workItemId) {
+      return `${this.getBaseUri()}/resource/itemName/com.ibm.team.workitem.WorkItem/${workItemId}`;
+   }
+
    /**
     * create a dialog which allows the user to select an RTC Query
     * @param {Function} onOk callback function triggered when OK button was clicked
