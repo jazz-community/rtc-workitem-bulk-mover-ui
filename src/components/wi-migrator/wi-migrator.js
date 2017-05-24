@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import template from './wi-migrator.html';
 import style from './wi-migrator.scss';
+import JazzHelpers from '../jazz-helpers/jazz-helpers';
 
 const WorkItemMigratorComponent = Vue.extend({
    style,
@@ -9,65 +10,55 @@ const WorkItemMigratorComponent = Vue.extend({
    props: {
       attributeDefinitions: Array,
       moveSuccessful: Boolean,
-      trackExpanded: Map,
-   },
-
-   created() {
-      this.trackExpanded = new Map();
-   },
-
-   computed: {
-      sAttr: function () {
-         var bla = this.attributeDefinitions.map(def => {
-            def.valueMappings.sort((a, b) => {
-               return a.originalValue.displayName > b.originalValue.displayName;
-            });
-            const shadowMappings = new Map();
-            def.valueMappings.forEach(e => {
-               const id = e.originalValue.identifier;
-               if(shadowMappings.has(id)) {
-                  const item = shadowMappings.get(id);
-                  item.affectedWorkItems.push(e.affectedWorkItem);
-                  item.orig.push(e);
-                  if(e.isRequired) {
-                     item.isRequired = true;
-                  }
-               } else {
-                  const val = e;
-                  val.affectedWorkItems = [e.affectedWorkItem];
-                  val.orig = [e];
-                  //val.checked = false;
-                  delete e.affectedWorkItem;
-                  shadowMappings.set(id, val);
-               }
-            });
-            def.shadowMappings = [];
-            for (let [k,v] of shadowMappings) {
-               def.shadowMappings.push(v);
-            }
-            return def;
-         });
-         console.log("end: ", bla);
-         return bla;
-      },
-   },
-
-   watch: {
-      isChecked: function(el) {
-         console.log("isChecked", this.trackExpanded.get(el));
-         return this.trackExpanded.get(el) === true;
-      },
+      serverError: String,
    },
 
    methods: {
-      toggleChecked(el) {
-         console.log("toggleChecked", el);
-         let isSet = true;
-         if(this.trackExpanded.has(el)) {
-            isSet = !this.trackExpanded.get(el);
-         }
-         this.trackExpanded.set(el, isSet);
-         console.log("toggleChecked", this.trackExpanded.get(el));
+      getLinkList(workItems) {
+         return workItems.map(x => {
+            const uri = JazzHelpers.getWorkItemUri(x.workItem.id);
+            return `<a target="_blank" href="${uri}">${x.workItem.id}</a>`;
+         }).join(", ");
+      },
+
+      getTitledLink(workItem) {
+         const uri = JazzHelpers.getWorkItemUri(workItem.id);
+         return `<a target="_blank" href="${uri}">${workItem.id}: ${workItem.title}</a>`;
+      },
+
+      subChanged(attrId, workItemId, chosen) {
+         this.attributeDefinitions.forEach(attrDef => {
+            attrDef.valueMappings.forEach(valMap => {
+               if(valMap.oldValue.identifier === attrId) {
+                  const multipleChild = valMap.affectedWorkItems.some(wi => {
+                     return wi.chosen !== chosen;
+                  });
+                  if(multipleChild) {
+                     valMap.chosen = "multiple";
+                  } else {
+                     valMap.chosen = chosen;
+                  }
+               }
+            });
+         });
+      },
+
+      topChanged(attrId, chosen) {
+         this.attributeDefinitions.forEach(attrDef => {
+            attrDef.valueMappings.forEach(valMap => {
+               if(valMap.oldValue.identifier === attrId) {
+                  valMap.affectedWorkItems.forEach(wi => {
+                     wi.chosen = chosen;
+                  });
+               }
+            });
+         });
+      },
+
+      hasRequiredChild(affectedWorkItems) {
+         return affectedWorkItems.some(x => {
+            return x.isRequired;
+         });
       },
 
       hierarchify(val) {

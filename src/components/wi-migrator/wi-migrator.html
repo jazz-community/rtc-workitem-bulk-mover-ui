@@ -1,45 +1,77 @@
 <div>
    <div v-if="!moveSuccessful" class="ui warning message">
-      <div class="header">
-         Your Work Items could not be moved automatically.
-      </div>
+      <div class="header">Your Work Items could not be moved automatically.</div>
       <p>You have to provide at least the required values in order to be able to move the selected work items.</p>
+      <p v-if="serverError !== null">{{serverError}}</p>
    </div>
 
    <h3>Value Mappings</h3>
-   <fieldset class="attr-mappings" v-for="attrDef in sAttr">
+   <fieldset class="attr-mappings" v-for="attrDef in attributeDefinitions">
       <legend :title="attrDef.identifier" :id="attrDef.identifier">{{ attrDef.displayName }}</legend>
       <table class="ui celled table">
          <thead>
             <tr>
                <th></th>
-               <th>Old Value</th>
                <th>New Value</th>
-               <th>Affected Work Item</th>
+               <th>Old Value</th>
+               <th>Affected Work Items</th>
             </tr>
          </thead>
          <tbody>
-            <template v-for="valMap in attrDef.shadowMappings">
+            <template v-for="valMap in attrDef.valueMappings">
                <tr>
-                  <td>
-                     <span class="fakeLink" v-on:click="toggleChecked(valMap.originalValue.identifier)">{{ trackExpanded.get(valMap.originalValue.identifier) ? "collapse" : "expand" }}</span>
+                  <td style="width: 4%">
+                     <i v-bind:class="[valMap.showDetails ? 'remove' : 'add', 'icon','link']" v-on:click="valMap.showDetails = !valMap.showDetails" data-content="Toggle visibility of affected Work Items" data-variation="inverted"></i>
+                     <!--<span class="fakeLink" v-on:click="valMap.showDetails = !valMap.showDetails">{{ valMap.showDetails ? "[ - ]" : "[ + ]" }}</span>-->
                   </td>
-                  <td style="width: 30%" :title="valMap.originalValue.identifier">
-                     {{ valMap.originalValue.displayName }}
-                     <span v-if="valMap.isRequired" style="color: red; font-size: 1.5em;">*</span>
-                  </td>
-                  <td style="width: 50%" >
-                     <select v-model="valMap.chosen" options="attrDef.allowedValues | selectify 'displayName' 'identifier'" v-if="attrDef.allowedValues.length > 0">
-                        <option v-bind:value="val.identifier" :val="val.identifier" v-for="val in attrDef.allowedValues">
+                  <td style="width: 44%">
+                     <select style="width: 90%" @change="topChanged(valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen" options="attrDef.allowedValues | selectify 'displayName' 'identifier'">
+                        <option selected disabled value="nothing"></option>
+                        <option disabled value="multiple">[Multiple Values Selected...]</option>
+                        <option :val="val.identifier" v-for="val in attrDef.allowedValues">
                            {{hierarchify(val.displayName)}}
                         </option>
                      </select>
-                     <input v-model="valMap.chosen" v-else type="text" />
+                     <span v-if="hasRequiredChild(valMap.affectedWorkItems)" data-tooltip="At least one of the child items requires this value to be specified.">
+                        <i style="color: red;" class="warning icon" ></i>
+                     </span>
                   </td>
-                  <td style="width: 20%">{{ valMap.affectedWorkItems }}</td>
+                  <td style="width: 26%" :title="valMap.oldValue.identifier">
+                     {{ valMap.oldValue.displayName }}
+                  </td>
+                  <td style="width: 26%" v-html="getLinkList(valMap.affectedWorkItems)"></td>
                </tr>
-               <tr v-if="trackExpanded.get(valMap.originalValue.identifier)" v-for="ee in valMap.orig">
-                  {{ ee.affectedWorkItem}}
+               <tr v-if="valMap.showDetails">
+                  <td></td>
+                  <td colspan="3">
+                     <table class="ui celled table">
+                        <thead>
+                           <tr>
+                              <th>New Value</th>
+                              <th>Affected Work Item</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr v-for="affected in valMap.affectedWorkItems">
+                              <td style="width: 46%">
+                                 <select @change="subChanged(valMap.oldValue.identifier, affected.workItem.id, affected.chosen)" v-model="affected.chosen" options="attrDef.allowedValues | selectify 'displayName' 'identifier'">
+                                    <option selected disabled value="nothing"></option>
+                                    <option style="width: 90%" :val="val.identifier" v-for="val in attrDef.allowedValues">
+                                       {{hierarchify(val.displayName)}}
+                                    </option>
+                                 </select>
+                                 <span v-if="affected.isRequired" data-tooltip="This attribute is required by the target project area.">
+                                    <i style="color: red;" class="warning icon"></i>
+                                 </span>
+                                 <span v-else data-tooltip="It is up to your decision if you want to map this attribute. Unless specified here, the default value will be used.">
+                                    <i style="color: blue;" class="info icon"></i>
+                                 </span>
+                              </td>
+                              <td v-html="getTitledLink(affected.workItem)"></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
                </tr>
             </template>
          </tbody>
