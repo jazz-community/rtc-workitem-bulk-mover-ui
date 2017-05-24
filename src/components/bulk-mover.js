@@ -68,6 +68,9 @@ const BulkMoverComponent = Vue.extend({
          return this.selected && this.workItems.length <= 0
             || this.targetProjectArea.length <= 0;
       },
+      countSelected: function() {
+         return this.wiTable.gridData.filter((x) => x.checked).length;
+      }
    },
 
    methods: {
