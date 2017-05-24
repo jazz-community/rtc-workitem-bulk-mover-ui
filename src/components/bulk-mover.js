@@ -23,6 +23,7 @@ const BulkMoverComponent = Vue.extend({
          targetProjectArea: '',
          attributeDefinitions: [],
          query: null,
+         serverError: null,
          wiTable: {
             searchQuery: '',
             gridColumns: {
@@ -93,6 +94,7 @@ const BulkMoverComponent = Vue.extend({
       },
 
       querySelected(data) {
+         this.loadInProgress = true;
          this.query = {name: data.name, id: data.itemId};
          var url = `${JazzHelpers.getBaseUri()}/oslc/queries/${this.query.id}/rtc_cm:results`;
          xhr.get(url, {
@@ -109,6 +111,7 @@ const BulkMoverComponent = Vue.extend({
                };
                this.wiTable.gridData.push(obj);
             });
+            this.loadInProgress = false;
          });
       },
 
@@ -133,19 +136,21 @@ const BulkMoverComponent = Vue.extend({
                'Content-Type': 'json',
             },
          }).then((retData) => {
-            if(retData.successful && retData.mapping.length > 0) {
+            if(retData.successful && retData.mapping && retData.mapping.length > 0) {
                this.moveSuccessful = true;
                this.attributeDefinitions = [];
             } else {
                this.moveSuccessful = false;
-               this.attributeDefinitions = retData.mapping;
+               this.serverError = retData.error || null;
+               if(retData.mapping) {
+                  this.attributeDefinitions = retData.mapping;
+               }
             }
             this.loadInProgress = false;
          }, (err) => {
-            console.log('err: ', err);
             this.moveSuccessful = false;
+            this.loadInProgress = false;
          }, (evt) => {
-            console.log('evt: ', evt);
             // Handle a progress event from the request if browser supports XHR2
          });
       },

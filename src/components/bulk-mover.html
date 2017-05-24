@@ -17,7 +17,7 @@
             </wi-table>
          </template>
 
-         <div v-if="!wiTable.gridData && !isQueryLoading" class="ui warning message">
+         <div v-if="!isQueryLoading && (!wiTable.gridData || wiTable.gridData.length <= 0)" class="ui warning message">
             <div class="header">The query did not return any result</div>
          </div>
 
@@ -29,8 +29,9 @@
             </select>
             <br /><br />
 
-            <div v-if="attributeDefinitions.length > 0">
+            <div v-if="attributeDefinitions && attributeDefinitions.length > 0">
                <wi-migrator
+                  :server-error="serverError"
                   :attribute-definitions="attributeDefinitions"
                   :move-successful="moveSuccessful">
                </wi-migrator>
@@ -40,11 +41,12 @@
 
             <div v-if="moveSuccessful" class="ui success message">
                <div class="header">Work Item Move Successful!</div>
-               <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project are successfully.</p>
+               <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project area successfully.</p>
             </div>
             <div v-if="moveSuccessful === false && attributeDefinitions.length <= 0" class="ui error message">
                <div class="header"> Work Item Move failed!</div>
-               <p>Could not determine at least one of the specified Work Items. This might happen if you are trying to move a Work Item that has already been moved previously</p>
+               <p v-if="serverError !== null">{{serverError}}</p>
+               <p v-else>Could not determine at least one of the specified Work Items. This might happen if you are trying to move a Work Item that has already been moved previously</p>
             </div>
          </template>
       </template>
