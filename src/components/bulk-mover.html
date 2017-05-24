@@ -1,9 +1,7 @@
 <div>
-
 	<h1>Move Work Items between Project Areas</h1>
 
 	<div id="WIMoveArea">
-
       <button v-if="!query" class="ui button tiny primary" v-bind:class="{ loading: isQueryLoading }" v-on:click="loadQuery">Select a Query</button>
       <template v-else>
          <h3>Selected Query</h3>
@@ -20,9 +18,7 @@
          </template>
 
          <div v-if="!wiTable.gridData && !isQueryLoading" class="ui warning message">
-            <div class="header">
-               The query did not return any result
-            </div>
+            <div class="header">The query did not return any result</div>
          </div>
 
          <template v-if="selected">
@@ -43,15 +39,11 @@
             <button v-bind:class="{ disabled: isDataMissing, loading: isQueryLoading }" class="ui button primary" v-on:click="moveWorkItems">Move {{countSelected}} Work Items</button>
 
             <div v-if="moveSuccessful" class="ui success message">
-               <div class="header">
-                  Work Item Move Successful!
-               </div>
+               <div class="header">Work Item Move Successful!</div>
                <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project are successfully.</p>
             </div>
             <div v-if="moveSuccessful === false && attributeDefinitions.length <= 0" class="ui error message">
-               <div class="header">
-                  Work Item Move failed!
-               </div>
+               <div class="header"> Work Item Move failed!</div>
                <p>Could not determine at least one of the specified Work Items. This might happen if you are trying to move a Work Item that has already been moved previously</p>
             </div>
          </template>
