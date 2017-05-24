@@ -14,6 +14,10 @@ export default class JazzHelpers {
       return (url && url.length > 0) ? url : 'https://localhost:7443/jazz';
    }
 
+   /**
+    * get the unique work item URI based on a work item ID
+    * @param {string} workItemId the work item ID for which we need the URI
+    */
    static getWorkItemUri(workItemId) {
       return `${this.getBaseUri()}/resource/itemName/com.ibm.team.workitem.WorkItem/${workItemId}`;
    }
