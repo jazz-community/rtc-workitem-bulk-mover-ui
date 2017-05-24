@@ -24,6 +24,10 @@
    font-weight: bold;
 }
 
+.attr-mappings td > input, .attr-mappings td > select {
+   width: 90%;
+}
+
 .fakeLink {
    color: blue;
    cursor: pointer;
