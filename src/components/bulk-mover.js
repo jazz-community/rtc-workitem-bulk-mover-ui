@@ -26,7 +26,6 @@ const BulkMoverComponent = Vue.extend({
          query: null,
          serverError: null,
          wiTable: {
-            searchQuery: '',
             gridColumns: {
                type: {name: 'Type', data: (data) => {
                   return `<img src="${data.type}"></img>`;

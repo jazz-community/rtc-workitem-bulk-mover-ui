@@ -29,7 +29,7 @@
                      </span>
                   </td>
                   <td style="width: 44%">
-                     <select style="width: 90%" @change="topChanged(valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen" options="attrDef.allowedValues | selectify 'displayName' 'identifier'">
+                     <select style="width: 90%" @change="topChanged(valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen">
                         <option selected disabled value="nothing"></option>
                         <option disabled value="multiple">[Multiple Values Selected...]</option>
                         <option :val="val.identifier" v-for="val in attrDef.allowedValues">
@@ -58,7 +58,7 @@
                         <tbody>
                            <tr v-for="affected in valMap.affectedWorkItems">
                               <td style="width: 46%">
-                                 <select @change="subChanged(valMap.oldValue.identifier, affected.workItem.id, affected.chosen)" v-model="affected.chosen" options="attrDef.allowedValues | selectify 'displayName' 'identifier'">
+                                 <select @change="subChanged(valMap.oldValue.identifier, affected.workItem.id, affected.chosen)" v-model="affected.chosen">
                                     <option selected disabled value="nothing"></option>
                                     <option style="width: 90%" :val="val.identifier" v-for="val in attrDef.allowedValues">
                                        {{hierarchify(val.displayName)}}

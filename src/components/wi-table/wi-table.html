@@ -7,11 +7,15 @@
                   <input class="prompt" name="query" type="text" placeholder="type to search..." v-model="filterKey">
                   <i class="search icon"></i>
                </div>
-               <button v-bind:class="{ disabled: filterKey.length <= 0}" style="margin-left: 20px" class="ui button mini" v-on:click="filterKey = ''">Clear</button>
+               <button v-bind:class="{ disabled: filterKey.length <= 0}" style="margin-left: 20px" class="ui button mini" v-on:click="filterKey = ''">Clear Search</button>
             </th>
          </tr>
          <tr>
-            <th></th>
+            <th>
+               <select @change="filterSelectChanged()" v-model="filterSelection">
+                  <option v-for="option in getOptions()" v-bind:class="{disabled: option.disabled}" :value="option.id">{{option.name}}</option>
+               </select>
+            </th>
             <th v-for="key in Object.keys(columns)">
                {{columns[key].name}}
             </th>
