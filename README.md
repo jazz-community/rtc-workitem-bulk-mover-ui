@@ -1,12 +1,12 @@
 [![travis-svg][travis-svg]][travis]
 
 # Work Item Bulk Mover Plugin for RTC
-While RTC supports to move a single Work Item from one project area to another, it lacks the capability of doing so for a bunch of Work Items at once.
+While RTC supports to move a single Work Item from one project area to another, it lacks the capability of doing so for a bunch of Work Items at once. This plug-in allows you to move a selected number of Work Items from one project area to another, based on a query selection.
 
 ## Motivation
-There are a couple of quite common use cases where moving a whole bunch of Work Items is necessary:
- - **Splitting or merging projects**: Project structure changes often need to be reflected in RTC, e.g. by moving a part of a project area to a new one.
- - **Moving to another process template**: There are differente approaches to move to a new process template. One of it is to create an entirely new project area from scratch. Easily transferring the existing work items to the new area is a key requirement.
+There are a couple of quite common use cases where moving selected number of Work Items is necessary:
+ - **Splitting or merging projects**: From our experience, changes in project strucutre or team setup often need to be reflected in RTC. As a result, project areas might be splitted or merged, raising the need to move the affected work items.
+ - **Moving to another process template**: There are multiple approaches to move to a new process template. One of it is to create an entirely new project area from scratch. Easily transferring the existing work items to the new area without changing the identifier and links is a key requirement.
 
 ## How it works
 1. Select a Work Item Query

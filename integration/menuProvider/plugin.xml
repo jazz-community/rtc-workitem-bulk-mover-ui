@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!-- describes how the plugin will integrate into the application -->
+<plugin>
+	<!-- declare this extension as a jazz consumer -->
+	<extension point="net.jazz.ajax.webBundles" />
+
+	<!-- register a page extension:
+		id: unique identifier for this extension
+		name: the display name of the page
+		widget: link to the javascript implementation class of the page
+		componentMenuWidget: implementation of the drop down menu
+		defaultAction: identifier of the default action executed when calling the plugin
+		action: the actions which are available in the extension
+		-->
+	<extension point="net.jazz.ajax.pages">
+		<page id="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider"
+				    name="%com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.name"
+				    widget="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.Registry"
+				    componentMenuWidget="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.MenuProvider"
+				    defaultAction="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.WorkItemBulkMove.move">
+			<action id="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.WorkItemBulkMove.move" />
+         <!-- register any other action here... -->
+		</page>
+	</extension>
+
+	<!-- bind javascript modules to css files for BT AddOns -->
+	<extension point="net.jazz.ajax.cssBindingSets">
+		<cssBindingSet id="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider" path="">
+            <!-- bindings used in all modules -->
+			<cssBinding jsModule="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.Registry">
+				<cssModule path="/ui/shared/styles/Registry.css"/>
+			</cssBinding>
+		</cssBindingSet>
+  	</extension>
+
+	<!-- bind page to web applications -->
+	<extension point="net.jazz.ajax.applicationPageBindings">
+		<!-- page binding
+			JTS, RTC, RQM and DNG Admin: com.ibm.team.app.web.admin
+			RTC: com.ibm.team.rtc.web.rationalTeamConcert
+			RQM: com.ibm.rqm.planning.web.qualityManager
+			DNG: com.ibm.rdm.web.application
+			LPA: com.ibm.team.lpa.web
+
+			HOW TO find ID's:
+			- open jazz page in firebug
+			- search for 'net.jazz.ajax.ui.PlatformUI.createAndRunWorkbench'
+			- use the ID provided in brackets
+
+			**********************************************************************************
+			**** IMPORTANT !!! ***************************************************************
+			**** Do also change the build script if you change the application ID! 		******
+			**********************************************************************************
+		 -->
+		<application id="com.ibm.team.rtc.web.rationalTeamConcert">
+			<page id="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider" />
+		</application>
+	</extension>
+</plugin>
