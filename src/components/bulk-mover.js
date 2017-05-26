@@ -3,6 +3,7 @@ import xhr from 'dojo/request/xhr';
 import template from './bulk-mover.html';
 import style from './bulk-mover.scss';
 import JazzHelpers from './jazz-helpers/jazz-helpers';
+import Utils from './jazz-helpers/Utils';
 import '../styles/ui.scss';
 import parser from 'dojo/parser';
 import dom from 'dojo/dom';
@@ -27,10 +28,27 @@ const BulkMoverComponent = Vue.extend({
          wiTable: {
             searchQuery: '',
             gridColumns: {
-               id: {name: 'Id', data: (data) => {
-                  return `<a target="_blank" href="${data.uri}">${data.id}</a>` ;
+               type: {name: 'Type', data: (data) => {
+                  return `<img src="${data.type}"></img>`;
                }},
-               description: {name: 'Title', data: (data) => {return data.description;}}
+               id: {name: 'Id', data: (data) => {
+                  return `<a target="_blank" href="${data.uri}">${data.id}</a>`;
+               }},
+               description: {name: 'Title', data: (data) => {
+                  return data.description;
+               }},
+               state: {name: 'State', data: (data) => {
+                  return `<img src="${data.state.icon}"></img>${data.state.name}`;
+               }},
+               owner: {name: 'Owned By', data: (data) => {
+                  return `<a target="_blank" href="${data.owner.uri}">${data.owner.name}</a>`;
+               }},
+               category: {name: 'Filed Against', data: (data) => {
+                  return data.category;
+               }},
+               target: {name: 'Planned For', data: (data) => {
+                  return data.target;
+               }},
             },
             gridData: []
          },
@@ -96,7 +114,7 @@ const BulkMoverComponent = Vue.extend({
       querySelected(data) {
          this.loadInProgress = true;
          this.query = {name: data.name, id: data.itemId};
-         var url = `${JazzHelpers.getBaseUri()}/oslc/queries/${this.query.id}/rtc_cm:results`;
+         const url = `${JazzHelpers.getBaseUri()}/oslc/queries/${this.query.id}/rtc_cm:results?oslc.properties=dc:type{rtc_cm:iconUrl},dc:identifier,dc:title,rdf:resource,rtc_cm:state{dc:title,rtc_cm:iconUrl},rtc_cm:ownedBy{dc:title,rdf:resource},rtc_cm:filedAgainst{rtc_cm:hierarchicalName},rtc_cm:plannedFor{dc:title}`;
          xhr.get(url, {
             handleAs: 'json',
             headers: {"Accept": "application/json"}
@@ -104,8 +122,19 @@ const BulkMoverComponent = Vue.extend({
             let queryresult = retData["oslc_cm:results"];
             queryresult.forEach((el) => {
                const obj = {
+                  type: Utils.getDeepKey("dc:type.rtc_cm:iconUrl", el),
                   id: el["dc:identifier"],
                   description: el["dc:title"],
+                  state: {
+                     name: Utils.getDeepKey("rtc_cm:state.dc:title", el),
+                     icon: Utils.getDeepKey("rtc_cm:state.rtc_cm:iconUrl", el),
+                  },
+                  owner: {
+                     name: Utils.getDeepKey("rtc_cm:ownedBy.dc:title", el),
+                     uri: Utils.getDeepKey("rtc_cm:ownedBy.rdf:resource", el),
+                  },
+                  category: Utils.getDeepKey("rtc_cm:filedAgainst.rtc_cm:hierarchicalName", el),
+                  target: Utils.getDeepKey("rtc_cm:plannedFor.dc:title", el),
                   uri: el["rdf:resource"],
                   checked: true
                };
