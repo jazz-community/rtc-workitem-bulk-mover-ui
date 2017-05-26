@@ -7,6 +7,7 @@
                   <input class="prompt" name="query" type="text" placeholder="type to search..." v-model="filterKey">
                   <i class="search icon"></i>
                </div>
+               <button v-bind:class="{ disabled: filterKey.length <= 0}" style="margin-left: 20px" class="ui button mini" v-on:click="filterKey = ''">Clear</button>
             </th>
          </tr>
          <tr>
@@ -28,6 +29,9 @@
                 v-html="columns[key].data(entry)"
                 v-for="key in Object.keys(columns)">
             </td>
+         </tr>
+         <tr v-if="filteredData.length == 0">
+            <td :colspan="Object.keys(columns).length + 1">Search did not match any result</td>
          </tr>
       </tbody>
       <tfoot class="full-width"> </tfoot>
