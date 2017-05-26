@@ -1,7 +1,15 @@
 language: node_js
 node_js:
- - 6
+- 6
 before_install:
- - npm install
+- npm install
 script:
- - npm run build
+- npm run build
+deploy:
+  provider: releases
+  api_key:
+    secure: MSMr06F/XiZ8Y+BImxiTWnEfLYV+YkxQX2ylEdQxmKwSpxlMww+hot+qei7bTbenf52yEHglfXnkjtJH9vwBg9sAWqXc4TaAJSamWjkmijHP65kJkR2w1Na2U3TQl2hi0TAkYuS3g/iDVsUMpV4hLjDCLF64tEIb0cS1/ZYhETNlGQWTP0u4WpS5vRe8DwgsyTJDuJppMiv56my9Q+TM3k7rBNxvovJy8aNOb+97Bof85FmVunA3nslO0hgHKNqlj6ZcqOoWAy0x/PVbbo81kadS183T3SekrCQ15kiT4UF8jQ0J56EvP7vxYfdPJEN4GqU/KY69we1+9XFBj+jXItpZRZRt9uAn4bvAgAOkQbxnj/pPcKnieedGRYp5aoA4/BF3GTtmPRVkMG/Z2YcwW7GBB+0IyWWoYAc0XrFbJ63ql2tMol4VckTFwe5GMWmAsqx5/4Nf5KZHT886o1/p5Zrwtx7u9RxYMhfCwlQaLB7hKnoJgswvewN/gXT1C2vvSLYy8tUUSAXPr/qfnRBhPNhEUozMl8/in/RV94H7cc1Qejuj1BR1RsddQolJQSFJpkzumX0M9YyN3DuguKAYM4fQaIs6JDrf6TLapw8sFLQVQ9MqbPXjmuwGSrhxSDcqQVu3+uuUfx0NmO4w+wA0Cv5VfLqMYpVvsUZEYsnAITo=
+  file: com.siemens.bt.jazz.ui.WorkItemBulkMover*.zip
+  on:
+    tags: true
+    repo: jazz-community/rtc-workitem-bulk-mover-ui
