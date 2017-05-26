@@ -1,0 +1,38 @@
+.com-siemens-bt-jazz-ui-WorkItemBulkMover {
+	padding: 16px 6px 16px 6px;
+	margin: 0px 6px 0px 6px;
+}
+
+.com-siemens-bt-jazz-ui-WorkItemBulkMover h1 {
+	font-size: 16pt;
+	font-style: normal;
+	font-weight: normal;
+	margin-top: 0px;
+	margin-right: 5px;
+	margin-bottom: 11px;
+	margin-left: 0px;
+}
+
+.com-siemens-bt-jazz-ui-WorkItemBulkMover h2 {
+	font-size: 14pt;
+	font-style: normal;
+	font-weight: normal;
+	margin-top: 0px;
+	margin-right: 5px;
+	margin-bottom: 11px;
+	margin-left: 0px;
+}
+
+.com-siemens-bt-jazz-ui-WorkItemBulkMover p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.com-siemens-bt-jazz-ui-WorkItemBulkMover-topControls {
+	float: right;
+	padding: 5px;
+}
+
+.com-siemens-bt-jazz-ui-WorkItemBulkMover-messageBox {
+	margin-bottom: 8px;
+}

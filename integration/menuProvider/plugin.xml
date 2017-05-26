@@ -18,8 +18,8 @@
 				    name="%com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.name"
 				    widget="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.Registry"
 				    componentMenuWidget="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.MenuProvider"
-				    defaultAction="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.WorkItemBulkMove.move">
-			<action id="com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.WorkItemBulkMove.move" />
+				    defaultAction="com.siemens.bt.jazz.ui.WorkItemBulkMover.move">
+			<action id="com.siemens.bt.jazz.ui.WorkItemBulkMover.move" />
          <!-- register any other action here... -->
 		</page>
 	</extension>

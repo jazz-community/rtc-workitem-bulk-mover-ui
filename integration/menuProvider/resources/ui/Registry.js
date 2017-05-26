@@ -15,8 +15,6 @@ define([
 
    // load page template
    "dojo/text!./shared/templates/Registry.html",
-   // load the helper utility
-   "./Utils",
    // wait for page to be ready
    "dojo/domReady!"
 ], function (declare, config, _WidgetBase, _TemplatedMixin,
@@ -25,20 +23,20 @@ define([
    // ********************
    // ADD OTHER PAGES HERE
    // ********************
-   template,
-   Utils) {
+   template) {
 
       // require the jazz platform UI
       var PlatformUI = net.jazz.ajax.ui.PlatformUI;
 
-      return declare("com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.BTAddOns", [_WidgetBase, _TemplatedMixin], {
-         constructor: function () {
-            this.messages = i18n;
-         },
+      return declare("com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.Registry", [_WidgetBase, _TemplatedMixin], {
+
+         templateString: template,
 
          postCreate: function () {
+            var ActionRegistry = PlatformUI.getWorkbench().getActionRegistry();
+
             // Work Item Bulk Mover
-            ActionRegistry.registerAction("com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider.ui.WorkItemBulkMove.move", this, "bulkMoveWorkItems");
+            ActionRegistry.registerAction("com.siemens.bt.jazz.ui.WorkItemBulkMover.move", this, "bulkMoveWorkItems");
             // *************************
             // REGISTER OTHER PAGES HERE
             // *************************

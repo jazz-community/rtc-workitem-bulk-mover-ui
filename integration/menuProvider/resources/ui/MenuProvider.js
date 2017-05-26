@@ -37,7 +37,7 @@ define([
 			this.addItemByArgs({
 				label: i18n.actionBulkMoveWorkItems,
 				icon: String(require.toUrl(imagePath + "wibm-icon.png")),
-				href: action + "menuProvider.ui.WorkItemBulkMove.move",
+				href: action + "move",
 				insertIndex: this._insertIndex++
 			});
 

@@ -115,6 +115,24 @@ module.exports = (env) => {
                version: version,
             },
          }),
+
+         modeConfig.prod && new JazzUpdateSitePlugin({
+            appType: 'ccm',
+            projectId: 'com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider',
+            acceptGlobPattern: [
+               'integration/menuProvider/resources/**',
+               'integration/menuProvider/META-INF/**',
+               'integration/menuProvider/plugin.xml',
+               'integration/menuProvider/plugin.properties',
+            ],
+            projectInfo: {
+               author: packageJson.author,
+               copyright: packageJson.author,
+               description: packageJson.description,
+               license: packageJson.license,
+               version: version,
+            },
+         }),
       ],
 
       externals: [
