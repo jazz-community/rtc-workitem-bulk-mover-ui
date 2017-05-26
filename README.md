@@ -24,7 +24,28 @@ There are a couple of quite common use cases where moving selected number of Wor
 Be reminded that this plug-in is still in heavy development and should not be considered stable.
 
 ## Setup Instructions
-This Project is the Client Side Extension of the Work Item Bulk Mover. There is also a server side extension which is required to be able to use this plug-in. As it needs some refactoring first, it is not published yet. As soon as it is, we will provide you with setup instructions.
+This Project is the Client Side Extension of the Work Item Bulk Mover. There is also a server side extension which is required to be able to use this plug-in.
+- Download the Client Extension from the [Releases](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/releases) page.
+- Download the Web Service from the [Bulk Mover Service Releases](https://github.com/jazz-community/rtc-workitem-bulk-mover-service/releases) page.
+
+Repeat the setup instructions listed below for any plug-in!
+
+### Installation
+Deploy just like any other update site:
+
+1. Extract the
+   - `com.siemens.bt.jazz.ui.WorkItemBulkMover_updatesite.ini` **file** from the zip file to the `server/conf/ccm/provision_profiles` directory
+2. Extract the `com.siemens.bt.jazz.ui.WorkItemBulkMover_updatesite` **folder** to the `server/conf/ccm/sites` directory
+3. Restart the server
+
+### Update existing installation
+1. Request a server reset in **one** of the following ways:
+    * If the server is currently running, call `https://server-address/ccm/admin/cmd/requestReset`
+    * Navigate to `https://server-address/ccm/admin?internaltools=true` so you can see the internal tools (on the left in the side-pane). Click on `Server Reset` and press the `Request Server Reset` button
+    * If your server is down, you can delete the ccm `built-on.txt` file. Liberty packed with 6.0.3 puts this file in a subfolder of `server/liberty/servers/clm/workarea/org.eclipse.osgi/**/ccm`. The easiest way to locate the file is using your operating system's search capabilites.
+2. Delete previously deployed updatesite folder
+3. Follow the file extraction steps from the section above
+4. Restart the server
 
 ## Contributing
 Please use the [Issue Tracker](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/issues) of this repository to report issues or suggest enhancements.<br>
