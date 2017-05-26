@@ -17,7 +17,9 @@ const WorkItemMigratorComponent = Vue.extend({
       getLinkList(workItems) {
          return workItems.map(x => {
             const uri = JazzHelpers.getWorkItemUri(x.workItem.id);
-            return `<a target="_blank" href="${uri}">${x.workItem.id}</a>`;
+            return `<span data-tooltip="${x.workItem.title}" data-position="top right">
+                      <a target="_blank" href="${uri}">${x.workItem.id}</a>
+                    </span>`;
          }).join(", ");
       },
 
