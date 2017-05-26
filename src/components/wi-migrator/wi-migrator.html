@@ -21,8 +21,12 @@
             <template v-for="valMap in attrDef.valueMappings">
                <tr>
                   <td style="width: 4%">
-                     <i v-bind:class="[valMap.showDetails ? 'remove' : 'add', 'icon','link']" v-on:click="valMap.showDetails = !valMap.showDetails" data-content="Toggle visibility of affected Work Items" data-variation="inverted"></i>
-                     <!--<span class="fakeLink" v-on:click="valMap.showDetails = !valMap.showDetails">{{ valMap.showDetails ? "[ - ]" : "[ + ]" }}</span>-->
+                     <span v-if="valMap.showDetails" data-tooltip="Click to collapse list" data-position="top left">
+                        <i class="remove icon link" v-on:click="valMap.showDetails = false;"></i>
+                     </span>
+                     <span v-else :data-tooltip="'Click to specify ' + attrDef.displayName + ' for each affected Work Item'" data-position="top left">
+                        <i class="add icon link" v-on:click="valMap.showDetails = true;"></i>
+                     </span>
                   </td>
                   <td style="width: 44%">
                      <select style="width: 90%" @change="topChanged(valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen" options="attrDef.allowedValues | selectify 'displayName' 'identifier'">
