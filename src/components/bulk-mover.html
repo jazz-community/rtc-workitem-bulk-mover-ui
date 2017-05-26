@@ -1,8 +1,9 @@
 <div>
 	<h1>Move Work Items between Project Areas</h1>
+   <p><i>Move a selected number of Work Items from one project area to another, based on a query selection.</i></p>
 
 	<div id="WIMoveArea">
-      <button v-if="!query" class="ui button tiny primary" v-bind:class="{ loading: isQueryLoading }" v-on:click="loadQuery">Select a Query</button>
+      <button style="margin-top: 40px" v-if="!query" class="ui button primary" v-bind:class="{ loading: isQueryLoading }" v-on:click="loadQuery">Select a Query</button>
       <template v-else>
          <h3>Selected Query</h3>
          <span>{{query.name}}</span>
