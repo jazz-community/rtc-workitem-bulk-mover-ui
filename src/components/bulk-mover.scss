@@ -1,5 +1,22 @@
+#WIMoveArea {
+   margin-bottom: 100px;
+}
+
 #WIMoveArea h3 {
    color: black;
    font-size: 15px;
    font-weight: bold;
+}
+
+.wibm-ui-footer {
+   color: gray;
+}
+
+.wibm-ui-footer a {
+   color: gray;
+   font-weight: bold;
+   text-decoration: none;
+   &:hover {
+      text-decoration: underline;
+   }
 }
