@@ -2,7 +2,7 @@
    <table class="ui celled table">
       <thead>
          <tr>
-            <th colspan="3">
+            <th :colspan="Object.keys(columns).length + 1">
                <div class="ui icon input">
                   <input class="prompt" name="query" type="text" placeholder="type to search..." v-model="filterKey">
                   <i class="search icon"></i>
@@ -10,9 +10,7 @@
             </th>
          </tr>
          <tr>
-            <th>
-               <!-- allow to accumulate selection -->
-            </th>
+            <th></th>
             <th v-for="key in Object.keys(columns)">
                {{columns[key].name}}
             </th>
@@ -21,7 +19,7 @@
       <tbody>
          <tr v-for="entry in filteredData">
             <td>
-               <div class="ui slider fitted checkbox">
+               <div class="ui fitted checkbox">
                   <input type="checkbox" v-model="entry.checked" />
                   <label><!-- Important: must have a label!--></label>
                </div>
