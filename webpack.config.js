@@ -119,6 +119,7 @@ module.exports = (env) => {
          modeConfig.prod && new JazzUpdateSitePlugin({
             appType: 'ccm',
             projectId: 'com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider',
+            pluginBasePath: 'integration/menuProvider/',
             acceptGlobPattern: [
                'integration/menuProvider/resources/**',
                'integration/menuProvider/META-INF/**',
