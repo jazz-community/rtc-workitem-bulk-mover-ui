@@ -1,31 +1,28 @@
 [![travis-svg][travis-svg]][travis]
 
 # Work Item Bulk Mover Plugin for RTC
-While RTC supports to move a single Work Item from one project area to another, it lacks the capability of doing so for a bunch of Work Items at once. This plug-in allows you to move a selected number of Work Items from one project area to another, based on a query selection.
+While RTC supports to move a single Work Item from one project area to another, it lacks the capability of doing so for a bunch of Work Items at once. This plug-in enables users of web interface to move a selected number of Work Items from one project area to another, based on a query selection.
+
+There used to be a feature called [Bulk Move Work Items between Project Areas](https://jazz.net/wiki/bin/view/Main/BulkMoveWorkItemsBetweenProjectAreas) which was available within the RTC Eclipse Client up and including version 4.0.7. Unfortunately,for today's releases, the plugin does not work anymore. Furthermore the plugins capabilities were limited to the Eclipse Client only. As the most RTC users work within the web interface, it is also more comfortable to have such a plugin available in the web interface.
 
 ## Motivation
 There are a couple of quite common use cases where moving selected number of Work Items is necessary:
  - **Splitting or merging projects**: From our experience, changes in project strucutre or team setup often need to be reflected in RTC. As a result, project areas might be splitted or merged, raising the need to move the affected work items.
- - **Moving to another process template**: There are multiple approaches to move to a new process template. One of it is to create an entirely new project area from scratch. Easily transferring the existing work items to the new area without changing the identifier and links is a key requirement.
+ - **Moving to another process template**: There are multiple approaches to move to a new process template. One of it is to create an entirely new project area from scratch. Easily transferring the existing work items to the new area without changing the identifier and links is a key requirement there.
 
 ## How it works
 1. Select a Work Item Query
-![Work Item Query Selection](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/blob/master/documentation/query-selection.png)
 2. Review the Work Items returned by the query and select which onces to move
 3. Define the target project area
 4. Hit the `Move Work Items` button
-![Work Item Selection - Prepare Move](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/blob/master/documentation/workitem-list.png)
 5. If a move is not possible yet, you will be asked to provide new values in case of where no suitable counterpart in the target project area was found. Then hit the `Move Work Items` button again
-![Move not possible, provide a mapping](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/blob/master/documentation/mapping-required.png)
-6. Check out the moved Work Items. Viewing the History of each one will reveil the fields that have changed.
-![Move not possible, provide a mapping](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/blob/master/documentation/moved-workitem.png)
-
-## Project Status
-Be reminded that this plug-in is still in heavy development and should not be considered stable.
+6. Check out the moved Work Items. Viewing the History of each one will reveal the fields that have changed.
+![Work Item Bulk Mover Version 1.0.0 demonstration](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/blob/master/documentation/WIBM_1.0.gif)
 
 ## Setup Instructions
-This Project is the Client Side Extension of the Work Item Bulk Mover. There is also a server side extension which is required to be able to use this plug-in.
+This Project is the Client Side Extension of the Work Item Bulk Mover. There is also a server side extension which is required to be able to use this plug-in. Furthermore, the plug-in somehow needs an extension point in the user interface to which it can be attached. Preferably, we would havel liked to integrate it directly into the Work Items menu, but we failed to do so. Our suggestion is to use a new menu entry from where all your future plug-ins can be served.
 - Download the Client Extension from the [Releases](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/releases) page.
+- Download the Menu Provider from the [Releases](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/releases) page.
 - Download the Web Service from the [Bulk Mover Service Releases](https://github.com/jazz-community/rtc-workitem-bulk-mover-service/releases) page.
 
 Repeat the setup instructions listed below for any plug-in!
