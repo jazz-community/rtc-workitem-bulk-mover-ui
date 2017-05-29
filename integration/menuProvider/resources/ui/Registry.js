@@ -42,17 +42,28 @@ define([
             // *************************
          },
 
+         // IMPORTANT: do not remove this, this method is required to be implemented
+         // triggered as soon as a MenuProvider provided page is requested
+         // not triggered while changing between MenuProvider provided pages
+         _onShow: function() {
+         },
+
+         // IMPORTANT: do not remove this, this method is required to be implemented
+         // triggered, as soon as another page outside of a MenuProvider provided page is requested
+         onHide: function() {
+         },
+
          bulkMoveWorkItems: function () {
             this.changePage(new WorkItemBulkMover());
          },
 
          // perform a page change
          changePage: function (pageWidget) {
-            while (content.hasChildNodes()) {
-               content.removeChild(this.pagecontent.firstChild);
+            while (this.pageContent.hasChildNodes()) {
+               this.pageContent.removeChild(this.pageContent.firstChild);
             }
             // place the passed in widget into the page content section
-            widget.placeAt(this.pageContent);
+            pageWidget.placeAt(this.pageContent);
          }
       });
    });
