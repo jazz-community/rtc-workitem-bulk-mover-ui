@@ -51,6 +51,7 @@ const BulkMoverComponent = Vue.extend({
             },
             gridData: []
          },
+         totalCount: 0,
          projectAreas: [],
          mappings: [],
          moveSuccessful: null,
@@ -114,11 +115,13 @@ const BulkMoverComponent = Vue.extend({
          this.loadInProgress = true;
          this.query = {name: data.name, id: data.itemId};
          const url = `${JazzHelpers.getBaseUri()}/oslc/queries/${this.query.id}/rtc_cm:results?oslc.properties=dc:type{rtc_cm:iconUrl},dc:identifier,dc:title,rdf:resource,rtc_cm:state{dc:title,rtc_cm:iconUrl},rtc_cm:ownedBy{dc:title,rdf:resource},rtc_cm:filedAgainst{rtc_cm:hierarchicalName},rtc_cm:plannedFor{dc:title}`;
+         this.serverError = null;
          xhr.get(url, {
             handleAs: 'json',
             headers: {"Accept": "application/json"}
          }).then((retData) => {
             let queryresult = retData["oslc_cm:results"];
+            this.totalCount = retData["oslc_cm:totalCount"];
             queryresult.forEach((el) => {
                const obj = {
                   type: Utils.getDeepKey("dc:type.rtc_cm:iconUrl", el),
@@ -140,6 +143,14 @@ const BulkMoverComponent = Vue.extend({
                this.wiTable.gridData.push(obj);
             });
             this.loadInProgress = false;
+         }, (error) => {
+            const errorMsg = error["message"];
+            if(errorMsg) {
+               this.serverError = errorMsg;
+            } else {
+               this.serverError = "Unknown Error occurred while trying to execute query!";
+            }
+            this.loadInProgress = false;
          });
       },
 
@@ -157,6 +168,7 @@ const BulkMoverComponent = Vue.extend({
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/move`;
+         this.serverError = null;
          xhr.post(url, {
             data: JSON.stringify(data),
             handleAs: 'json',
