@@ -21,17 +21,17 @@
             <template v-for="valMap in attrDef.valueMappings">
                <tr>
                   <td style="width: 4%">
-                     <span v-if="valMap.showDetails" data-tooltip="Click to collapse list" data-position="top left">
+                     <span v-if="valMap.showDetails && valMap.affectedWorkItems.length > 1" data-tooltip="Click to collapse list" data-position="top left">
                         <i class="remove icon link" v-on:click="valMap.showDetails = false;"></i>
                      </span>
-                     <span v-else :data-tooltip="'Click to specify ' + attrDef.displayName + ' for each affected Work Item'" data-position="top left">
+                     <span v-if="!valMap.showDetails && valMap.affectedWorkItems.length > 1" :data-tooltip="'Click to specify ' + attrDef.displayName + ' for each affected Work Item'" data-position="top left">
                         <i class="add icon link" v-on:click="valMap.showDetails = true;"></i>
                      </span>
                   </td>
                   <td style="width: 44%">
                      <select style="width: 86%" @change="topChanged(valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen">
                         <option selected value="nothing"></option>
-                        <option disabled value="multiple">[Multiple Values Selected...]</option>
+                        <option v-if="valMap.affectedWorkItems.length > 1" disabled value="multiple">[Multiple Values Selected...]</option>
                         <option :value="val.identifier" :id="val.identifier" v-for="val in attrDef.allowedValues">
                            {{hierarchify(val.displayName)}}
                         </option>
@@ -47,7 +47,7 @@
                   <td style="width: 26%" :title="valMap.oldValue.identifier">
                      {{ valMap.oldValue.displayName }}
                   </td>
-                  <td style="width: 26%" v-html="getLinkList(valMap.affectedWorkItems)"></td>
+                  <td style="width: 26%" v-html="valMap.affectedWorkItems.length === 1 ? getTitledLink(valMap.affectedWorkItems[0].workItem) : getLinkList(valMap.affectedWorkItems)"></td>
                </tr>
                <tr v-if="valMap.showDetails">
                   <td></td>
