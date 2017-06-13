@@ -28,6 +28,25 @@ const WorkItemMigratorComponent = Vue.extend({
          return `<a target="_blank" href="${uri}">${workItem.id}: ${workItem.title}</a>`;
       },
 
+      isApplyAllAllowed(chosen) {
+         return chosen !== 'multiple';
+      },
+
+      applyToAll(attrId, valId) {
+         if(this.isApplyAllAllowed(valId)) {
+            this.attributeDefinitions.forEach(attrDef => {
+               if(attrDef.identifier === attrId) {
+                  attrDef.valueMappings.forEach(valMap => {
+                     valMap.chosen = valId;
+                     valMap.affectedWorkItems.forEach(wi => {
+                        wi.chosen = valId;
+                     });
+                  });
+               }
+            });
+         }
+      },
+
       subChanged(attrId, workItemId, chosen) {
          this.attributeDefinitions.forEach(attrDef => {
             attrDef.valueMappings.forEach(valMap => {

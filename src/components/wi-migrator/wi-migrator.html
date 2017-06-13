@@ -29,13 +29,17 @@
                      </span>
                   </td>
                   <td style="width: 44%">
-                     <select style="width: 90%" @change="topChanged(valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen">
+                     <select style="width: 86%" @change="topChanged(valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen">
                         <option selected value="nothing"></option>
                         <option disabled value="multiple">[Multiple Values Selected...]</option>
                         <option :value="val.identifier" :id="val.identifier" v-for="val in attrDef.allowedValues">
                            {{hierarchify(val.displayName)}}
                         </option>
                      </select>
+                     <span v-if="isApplyAllAllowed(valMap.chosen)" :data-tooltip="'Apply this value to all new ' + attrDef.displayName + ' values'">
+                        <i style="cursor: pointer;" class="world icon" v-on:click="applyToAll(attrDef.identifier, valMap.chosen)"></i>
+                     </span>
+                     <i v-else class="world icon disabled"></i>
                      <span v-if="hasRequiredChild(valMap.affectedWorkItems)" data-tooltip="At least one of the child items requires this value to be specified.">
                         <i style="color: red;" class="warning icon" ></i>
                      </span>
