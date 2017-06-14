@@ -5,7 +5,9 @@ const WorkItemTableComponent = Vue.extend({
    template,
    components: {},
    props: {
+      totalCount: Number,
       workItems: Array,
+      buttons: Array,
       columns: Object,
    },
 

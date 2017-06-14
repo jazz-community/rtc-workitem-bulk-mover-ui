@@ -12,8 +12,10 @@
          <template v-if="wiTable.gridData && wiTable.gridData.length > 0">
             <h3>Work Items</h3>
             <wi-table
+               :total-count="totalCount"
                :work-items="wiTable.gridData"
-               :columns="wiTable.gridColumns">
+               :columns="wiTable.gridColumns"
+               :buttons="wiTable.buttons">
             </wi-table>
          </template>
 

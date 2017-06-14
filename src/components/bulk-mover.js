@@ -9,7 +9,7 @@ import parser from 'dojo/parser';
 import dom from 'dojo/dom';
 import WorkItemTableComponent from './wi-table/wi-table';
 import WorkItemMigratorComponent from './wi-migrator/wi-migrator';
-
+const pageSize = 10;
 const BulkMoverComponent = Vue.extend({
    style,
    template,
@@ -49,7 +49,24 @@ const BulkMoverComponent = Vue.extend({
                   return data.target;
                }},
             },
-            gridData: []
+            buttons: [{
+               name: `Load All Remaining`,
+               active: true,
+               action: () => {
+                  if(this.query && this.query.nextPage !== null) {
+                     this.loadNextPage(this.query.nextPage, true);
+                  }
+               }
+            },{
+               name: `Load Next ${pageSize}`,
+               active: true,
+               action: () => {
+                  if(this.query && this.query.nextPage !== null) {
+                     this.loadNextPage(this.query.nextPage, false);
+                  }
+               }
+            }],
+            gridData: [],
          },
          totalCount: 0,
          projectAreas: [],
@@ -113,7 +130,7 @@ const BulkMoverComponent = Vue.extend({
 
       querySelected(data) {
          this.loadInProgress = true;
-         this.query = {name: data.name, id: data.itemId};
+         this.query = {name: data.name, id: data.itemId, offSet: 0};
          const props = [
             "rtc_cm:type{rtc_cm:iconUrl}",
             "dcterms:identifier",
@@ -125,7 +142,11 @@ const BulkMoverComponent = Vue.extend({
             "rtc_cm:plannedFor{dcterms:title}"
          ];
          const joinedProps = props.join(",");
-         const url = `${JazzHelpers.getBaseUri()}/oslc/queries/${this.query.id}/rtc_cm:results?oslc.properties=${joinedProps}`;
+         const url = `${JazzHelpers.getBaseUri()}/oslc/queries/${this.query.id}/rtc_cm:results?oslc.paging=true&oslc.pageSize=${pageSize}&oslc.properties=${joinedProps}`;
+         this.loadNextPage(url, false);
+      },
+
+      loadNextPage(url, recursive) {
          this.serverError = null;
          xhr.get(url, {
             handleAs: 'json',
@@ -136,6 +157,10 @@ const BulkMoverComponent = Vue.extend({
          }).then((retData) => {
             let queryResult = retData["oslc:results"];
             this.totalCount = retData["oslc:responseInfo"]["oslc:totalCount"];
+            this.query.nextPage = retData["oslc:responseInfo"]["oslc:nextPage"] || null;
+            if(this.query.nextPage === null) {
+               this.wiTable.buttons.forEach(b => {b.active = false;});
+            }
             queryResult.forEach((el) => {
                const obj = {
                   type: Utils.getDeepKey("rtc_cm:type.rtc_cm:iconUrl", el),
@@ -156,6 +181,9 @@ const BulkMoverComponent = Vue.extend({
                };
                this.wiTable.gridData.push(obj);
             });
+            if(recursive && this.query.nextPage !== null) {
+               this.loadNextPage(this.query.nextPage, true);
+            }
             this.loadInProgress = false;
          }, (error) => {
             const errorMsg = error["message"];

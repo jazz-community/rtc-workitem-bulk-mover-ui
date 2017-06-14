@@ -38,6 +38,17 @@
             <td :colspan="Object.keys(columns).length + 1">Search did not match any result</td>
          </tr>
       </tbody>
-      <tfoot class="full-width"> </tfoot>
+      <tfoot class="full-width">
+         <tr>
+            <th :colspan="Object.keys(columns).length + 1">
+               <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <span><b>{{filteredData.length}}</b> / <b>{{totalCount}}</b> Work Items loaded</span>
+                  <span>
+                     <button v-bind:class="{ disabled: !button.active }" class="ui button right floated tiny" v-on:click="button.action" v-for="button in buttons">{{button.name}}</button>
+                  </span>
+               </div>
+            </th>
+         </tr>
+      </tfoot>
    </table>
 </div>
