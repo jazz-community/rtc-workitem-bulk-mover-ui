@@ -203,16 +203,18 @@ const BulkMoverComponent = Vue.extend({
          });
       },
 
-      moveWorkItems() {
-         this.tryMove(this.workItems, this.targetProjectArea, this.attributeDefinitions);
+      moveWorkItems(previewOnly) {
+         alert("previewOnly: " + previewOnly);
+         this.tryMove(this.workItems, this.targetProjectArea, this.attributeDefinitions, previewOnly);
       },
 
-      tryMove(workItems, projectArea, attributeDefinitions) {
+      tryMove(workItems, projectArea, attributeDefinitions, previewOnly) {
          this.loadInProgress = true;
          const data = {
             targetProjectArea: projectArea,
             workItems: workItems,
             attributeDefinitions: attributeDefinitions,
+            previewOnly: previewOnly,
          };
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';

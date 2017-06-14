@@ -43,7 +43,11 @@
                </wi-migrator>
             </div>
 
-            <button v-bind:class="{ disabled: isDataMissing, loading: isQueryLoading }" class="ui button primary" v-on:click="moveWorkItems">Move {{countSelected}} Work Items</button>
+            <div class="ui buttons">
+               <button v-bind:class="{ disabled: (isDataMissing || attributeDefinitions.length > 0), loading: isQueryLoading }" class="ui button" v-on:click="moveWorkItems(true)">Preview Value Mappings</button>
+               <div class="or"></div>
+               <button v-bind:class="{ disabled: isDataMissing, loading: isQueryLoading }" class="ui button primary" v-on:click="moveWorkItems(false)">Move {{countSelected}} Work Items</button>
+            </div>
 
             <div v-if="moveSuccessful" class="ui success message">
                <div class="header">Work Item Move Successful!</div>
