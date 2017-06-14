@@ -70,7 +70,6 @@ const BulkMoverComponent = Vue.extend({
          },
          totalCount: 0,
          projectAreas: [],
-         mappings: [],
          moveSuccessful: null,
          loadInProgress: false,
       };
@@ -110,6 +109,13 @@ const BulkMoverComponent = Vue.extend({
    },
 
    methods: {
+      resetValues() {
+         this.wiTable.gridData = [];
+         this.attributeDefinitions = [];
+         this.totalCount = 0;
+         this.moveSuccessful = null;
+      },
+
       readProjectAreas() {
          this.loadInProgress = true;
          const base = JazzHelpers.getBaseUri();
@@ -129,6 +135,7 @@ const BulkMoverComponent = Vue.extend({
       },
 
       querySelected(data) {
+         this.resetValues();
          this.loadInProgress = true;
          this.query = {name: data.name, id: data.itemId, offSet: 0};
          const props = [
