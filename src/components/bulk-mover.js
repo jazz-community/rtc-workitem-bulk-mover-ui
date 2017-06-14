@@ -114,30 +114,44 @@ const BulkMoverComponent = Vue.extend({
       querySelected(data) {
          this.loadInProgress = true;
          this.query = {name: data.name, id: data.itemId};
-         const url = `${JazzHelpers.getBaseUri()}/oslc/queries/${this.query.id}/rtc_cm:results?oslc.properties=dc:type{rtc_cm:iconUrl},dc:identifier,dc:title,rdf:resource,rtc_cm:state{dc:title,rtc_cm:iconUrl},rtc_cm:ownedBy{dc:title,rdf:resource},rtc_cm:filedAgainst{rtc_cm:hierarchicalName},rtc_cm:plannedFor{dc:title}`;
+         const props = [
+            "rtc_cm:type{rtc_cm:iconUrl}",
+            "dcterms:identifier",
+            "dcterms:title",
+            "rdf:about",
+            "rtc_cm:state{dcterms:title,rtc_cm:iconUrl}",
+            "dcterms:contributor{foaf:name,rdf:about}",
+            "rtc_cm:filedAgainst{rtc_cm:hierarchicalName}",
+            "rtc_cm:plannedFor{dcterms:title}"
+         ];
+         const joinedProps = props.join(",");
+         const url = `${JazzHelpers.getBaseUri()}/oslc/queries/${this.query.id}/rtc_cm:results?oslc.properties=${joinedProps}`;
          this.serverError = null;
          xhr.get(url, {
             handleAs: 'json',
-            headers: {"Accept": "application/json"}
+            headers: {
+               "Accept": "application/json",
+               "OSLC-Core-Version": "2.0"
+            }
          }).then((retData) => {
-            let queryresult = retData["oslc_cm:results"];
-            this.totalCount = retData["oslc_cm:totalCount"];
-            queryresult.forEach((el) => {
+            let queryResult = retData["oslc:results"];
+            this.totalCount = retData["oslc:responseInfo"]["oslc:totalCount"];
+            queryResult.forEach((el) => {
                const obj = {
-                  type: Utils.getDeepKey("dc:type.rtc_cm:iconUrl", el),
-                  id: el["dc:identifier"],
-                  description: el["dc:title"],
+                  type: Utils.getDeepKey("rtc_cm:type.rtc_cm:iconUrl", el),
+                  id: el["dcterms:identifier"],
+                  description: el["dcterms:title"],
                   state: {
-                     name: Utils.getDeepKey("rtc_cm:state.dc:title", el),
+                     name: Utils.getDeepKey("rtc_cm:state.dcterms:title", el),
                      icon: Utils.getDeepKey("rtc_cm:state.rtc_cm:iconUrl", el),
                   },
                   owner: {
-                     name: Utils.getDeepKey("rtc_cm:ownedBy.dc:title", el),
-                     uri: Utils.getDeepKey("rtc_cm:ownedBy.rdf:resource", el),
+                     name: Utils.getDeepKey("dcterms:contributor.foaf:name", el),
+                     uri: Utils.getDeepKey("dcterms:contributor.rdf:about", el),
                   },
                   category: Utils.getDeepKey("rtc_cm:filedAgainst.rtc_cm:hierarchicalName", el),
-                  target: Utils.getDeepKey("rtc_cm:plannedFor.dc:title", el),
-                  uri: el["rdf:resource"],
+                  target: Utils.getDeepKey("rtc_cm:plannedFor.dcterms:title", el),
+                  uri: el["rdf:about"],
                   checked: true
                };
                this.wiTable.gridData.push(obj);
