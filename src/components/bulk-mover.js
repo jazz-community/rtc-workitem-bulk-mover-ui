@@ -204,7 +204,6 @@ const BulkMoverComponent = Vue.extend({
       },
 
       moveWorkItems(previewOnly) {
-         alert("previewOnly: " + previewOnly);
          this.tryMove(this.workItems, this.targetProjectArea, this.attributeDefinitions, previewOnly);
       },
 
@@ -213,7 +212,7 @@ const BulkMoverComponent = Vue.extend({
          const data = {
             targetProjectArea: projectArea,
             workItems: workItems,
-            attributeDefinitions: attributeDefinitions,
+            mapping: attributeDefinitions,
             previewOnly: previewOnly,
          };
          const base = JazzHelpers.getBaseUri();

@@ -6,4 +6,4 @@ Bundle-Version: 0.9.0
 Bundle-Vendor: Siemens Building Technologies
 Bundle-Localization: plugin
 Require-Bundle: net.jazz.ajax;bundle-version="2.2.2000",
- com.siemens.bt.jazz.services.WorkItemBulkMover
+ com.siemens.bt.jazz.services.WorkItemBulkMover;bundle-version="1.1.0"
