@@ -47,7 +47,6 @@ const WorkItemTableComponent = Vue.extend({
       },
 
       filterSelectChanged() {
-         console.log("filterSelectChanged", this.filterSelection);
          switch(this.filterSelection) {
             case "deselectFiltered":
                this.updateChecked(this.filteredData, false);
@@ -73,7 +72,6 @@ const WorkItemTableComponent = Vue.extend({
 
    computed: {
       filteredData: function () {
-         console.log("filteredData", this.filterKey);
          const filterKey = this.filterKey && this.filterKey.toLowerCase();
          let data = this.workItems;
          if (filterKey) {
