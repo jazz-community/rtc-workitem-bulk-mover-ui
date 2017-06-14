@@ -36,7 +36,7 @@
                            {{hierarchify(val.displayName)}}
                         </option>
                      </select>
-                     <span v-if="isApplyAllAllowed(valMap.chosen)" :data-tooltip="'Apply this value to all new ' + attrDef.displayName + ' values'">
+                     <span v-if="isApplyAllAllowed(valMap.chosen, attrDef.valueMappings.length)" :data-tooltip="'Apply this value to all new ' + attrDef.displayName + ' values'">
                         <i style="cursor: pointer;" class="world icon" v-on:click="applyToAll(attrDef.identifier, valMap.chosen)"></i>
                      </span>
                      <i v-else class="world icon disabled"></i>
