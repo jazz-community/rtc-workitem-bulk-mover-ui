@@ -44,6 +44,13 @@ Deploy just like any other update site:
 3. Follow the file extraction steps from the section above
 4. Restart the server
 
+## Compatibility
+### RTC compatibility
+This plug-in has been verified to work on RTC 6.0.3 and onward. According to [Issue 1](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/issues/1), the author expects the plug-in to work with all RTC releases ever since 4.0, but we cannot confirm this (yet). Are you using an older version of RTC (prior to 6.0.3)? We would really appreciate your feedback on compatibility, drop us a comment [here](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/issues/1).
+
+### Plugin Compatibility
+Version 1.1.0 and onward require that your installation of the [Work Item Bulk Mover Service](https://github.com/jazz-community/rtc-workitem-bulk-mover-service) is at least on Version 1.1.0, due to a breaking change in the API.
+
 ## Contributing
 Please use the [Issue Tracker](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/issues) of this repository to report issues or suggest enhancements.<br>
 Pull requests are very welcome.
