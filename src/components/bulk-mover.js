@@ -165,9 +165,9 @@ const BulkMoverComponent = Vue.extend({
             let queryResult = retData["oslc:results"];
             this.totalCount = retData["oslc:responseInfo"]["oslc:totalCount"];
             this.query.nextPage = retData["oslc:responseInfo"]["oslc:nextPage"] || null;
-            if(this.query.nextPage === null) {
-               this.wiTable.buttons.forEach(b => {b.active = false;});
-            }
+
+            this.wiTable.buttons.forEach(b => {b.active = this.query.nextPage !== null;});
+
             queryResult.forEach((el) => {
                const obj = {
                   type: Utils.getDeepKey("rtc_cm:type.rtc_cm:iconUrl", el),
