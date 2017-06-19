@@ -7,8 +7,9 @@ There used to be a feature called [Bulk Move Work Items between Project Areas](h
 
 ## Motivation
 There are a couple of quite common use cases where moving selected number of Work Items is necessary:
- - **Splitting or merging projects**: From our experience, changes in project strucutre or team setup often need to be reflected in RTC. As a result, project areas might be splitted or merged, raising the need to move the affected work items.
+ - **Splitting or merging projects**: From our experience, changes in project structure or team setup often need to be reflected in RTC. As a result, project areas might be split or merged, raising the need to move the affected work items.
  - **Moving to another process template**: There are multiple approaches to move to a new process template. One of it is to create an entirely new project area from scratch. Easily transferring the existing work items to the new area without changing the identifier and links is a key requirement there.
+ - **Defect Management**: If, by example, your application is based on a platform, your users or customers may file defects against your application project area where they do not belong. You can then move them to the platform project area, whereas the issuer of the defect will still be able to receive updates on this defect.
 
 ## How it works
 1. Select a Work Item Query
