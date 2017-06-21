@@ -1,6 +1,6 @@
 {
   "name": "rtc-workitem-bulk-mover-ui",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "RTC Work-Item Bulk Mover",
   "main": "src/main.js",
   "dependencies": {
@@ -16,7 +16,7 @@
     "eslint": "^3.18.0",
     "eslint-config-google": "^0.7.1",
     "jasmine-core": "^2.5.2",
-    "jazz-update-site-webpack-plugin": "^0.4.0",
+    "jazz-update-site-webpack-plugin": "^0.4.1",
     "karma": "^1.6.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.1",
