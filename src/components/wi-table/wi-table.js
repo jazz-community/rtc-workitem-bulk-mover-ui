@@ -77,7 +77,15 @@ const WorkItemTableComponent = Vue.extend({
          if (filterKey) {
             data = data.filter(function (row) {
                return Object.keys(row).some(function (key) {
-                  return String(row[key]).toLowerCase().indexOf(filterKey) > -1;
+                  var el = row[key];
+                  if(typeof el === "object" && typeof el.name !== "undefined" && typeof el.name !== "object") {
+                     el = el.name;
+                  }
+                  var lowered = String(el).toLowerCase();
+                  if(typeof lowered !== "string") {
+                     return false;
+                  }
+                  return lowered.indexOf(filterKey) > -1;
                });
             });
          }

@@ -28,7 +28,7 @@ const BulkMoverComponent = Vue.extend({
          wiTable: {
             gridColumns: {
                type: {name: 'Type', data: (data) => {
-                  return `<img src="${data.type}"></img>`;
+                  return `<img src="${data.type.icon}"></img>${data.type.name}`;
                }},
                id: {name: 'Id', data: (data) => {
                   return `<a target="_blank" href="${data.uri}">${data.id}</a>`;
@@ -139,7 +139,7 @@ const BulkMoverComponent = Vue.extend({
          this.loadInProgress = true;
          this.query = {name: data.name, id: data.itemId, offSet: 0};
          const props = [
-            "rtc_cm:type{rtc_cm:iconUrl}",
+            "rtc_cm:type{dcterms:title,rtc_cm:iconUrl}",
             "dcterms:identifier",
             "dcterms:title",
             "rdf:about",
@@ -170,7 +170,10 @@ const BulkMoverComponent = Vue.extend({
 
             queryResult.forEach((el) => {
                const obj = {
-                  type: Utils.getDeepKey("rtc_cm:type.rtc_cm:iconUrl", el),
+                  type: {
+                     name: Utils.getDeepKey("rtc_cm:type.dcterms:title", el),
+                     icon: Utils.getDeepKey("rtc_cm:type.rtc_cm:iconUrl", el),
+                  },
                   id: el["dcterms:identifier"],
                   description: el["dcterms:title"],
                   state: {
