@@ -7,6 +7,7 @@ import Utils from './jazz-helpers/Utils';
 import '../styles/ui.scss';
 import parser from 'dojo/parser';
 import dom from 'dojo/dom';
+import packageJson from '../../package.json';
 import WorkItemTableComponent from './wi-table/wi-table';
 import WorkItemMigratorComponent from './wi-migrator/wi-migrator';
 const pageSize = 10;
@@ -20,6 +21,7 @@ const BulkMoverComponent = Vue.extend({
 
    data() {
       return {
+         version: packageJson.version,
          wiInput: '',
          targetProjectArea: '',
          attributeDefinitions: [],
