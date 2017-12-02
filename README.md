@@ -53,7 +53,7 @@ This plug-in has been verified to work on RTC 6.0.3 and onward. According to [Is
 Version 1.1.0 and onward require that your installation of the [Work Item Bulk Mover Service](https://github.com/jazz-community/rtc-workitem-bulk-mover-service) is at least on Version 1.1.0, due to a breaking change in the API.
 
 ## Contributing
-Please use the [Issue Tracker](https://github.com/jazz-community/rtc-absence-widget/issues) of this repository to report issues or suggest enhancements.
+Please use the [Issue Tracker](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/issues) of this repository to report issues or suggest enhancements.
 
 For general contribution guidelines, please refer to [CONTRIBUTING.md](https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/blob/master/CONTRIBUTING.md)
 
