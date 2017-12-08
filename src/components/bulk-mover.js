@@ -10,6 +10,7 @@ import dom from 'dojo/dom';
 import packageJson from '../../package.json';
 import WorkItemTableComponent from './wi-table/wi-table';
 import WorkItemMigratorComponent from './wi-migrator/wi-migrator';
+import WorkItemTypeMapperComponent from './wi-type-mapper/wi-type-mapper';
 const pageSize = 10;
 const BulkMoverComponent = Vue.extend({
    style,
@@ -17,6 +18,7 @@ const BulkMoverComponent = Vue.extend({
    components: {
       'wi-table': WorkItemTableComponent,
       'wi-migrator': WorkItemMigratorComponent,
+      'wi-type-mapper': WorkItemTypeMapperComponent,
    },
 
    data() {
@@ -24,9 +26,11 @@ const BulkMoverComponent = Vue.extend({
          version: packageJson.version,
          wiInput: '',
          targetProjectArea: '',
+         targetTypes: [],
          attributeDefinitions: [],
          query: null,
          serverError: null,
+         typeMap: new Map(),
          wiTable: {
             gridColumns: {
                type: {name: 'Type', data: (data) => {
@@ -72,6 +76,7 @@ const BulkMoverComponent = Vue.extend({
          },
          totalCount: 0,
          projectAreas: [],
+         projectAreaSelected: false,
          moveSuccessful: null,
          loadInProgress: false,
       };
@@ -91,6 +96,15 @@ const BulkMoverComponent = Vue.extend({
             .filter((x) => x.checked)
             .map((x) => x.id);
       },
+      sourceTypes: function() {
+         return this.wiTable.gridData
+            .filter((x) => x.checked)
+            .map((x) => x.type)
+            .filter((item, index, self) =>
+                  index === self.findIndex((t) => (
+                     t.id === item.id
+                  )));
+      },
       selected: function() {
          return this.wiTable.gridData.length > 0 && this.wiTable.gridData
             .filter((x) => x.checked);
@@ -104,6 +118,18 @@ const BulkMoverComponent = Vue.extend({
       isDataMissing: function() {
          return this.selected && this.workItems.length <= 0
             || this.targetProjectArea.length <= 0;
+      },
+      isProjectAreaSelected: function() {
+         return (this.targetProjectArea && this.targetProjectArea !== null && this.targetProjectArea !== '');
+      },
+      isTypeMappingDataAvailable: function() {
+         console.log("isTypeMappingDataAvailable: ", this.targetTypes.length);
+         return this.targetTypes.length > 0;
+      },
+      areAllTypesMapped: function() {
+         console.log("areAllTypesMapped:", this.sourceTypes.length, this.typeMap.size);
+         return true;
+         //return this.sourceTypes.length === this.typeMap.size;
       },
       countSelected: function() {
          return this.wiTable.gridData.filter((x) => x.checked).length;
@@ -132,6 +158,23 @@ const BulkMoverComponent = Vue.extend({
          });
       },
 
+      getTargetWorkItemTypes() {
+         var projectArea = this.targetProjectArea;
+         console.log("projectArea: ", projectArea);
+         this.loadInProgress = true;
+         const base = JazzHelpers.getBaseUri();
+         const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
+         const url = `${base}/service/${service}/types?project-area=${projectArea}`;
+         xhr.get(url, {
+            handleAs: 'json',
+            headers: {"Accept": "application/json"}
+         }).then((retData) => {
+            this.targetTypes = retData;
+            console.log(this.targetTypes);
+            this.loadInProgress = false;
+         });
+      },
+
       loadQuery() {
          JazzHelpers.getQueryDialog(this.querySelected);
       },
@@ -141,7 +184,7 @@ const BulkMoverComponent = Vue.extend({
          this.loadInProgress = true;
          this.query = {name: data.name, id: data.itemId, offSet: 0};
          const props = [
-            "rtc_cm:type{dcterms:title,rtc_cm:iconUrl}",
+            "rtc_cm:type{dcterms:title,dcterms:identifier,rtc_cm:iconUrl}",
             "dcterms:identifier",
             "dcterms:title",
             "rdf:about",
@@ -173,6 +216,7 @@ const BulkMoverComponent = Vue.extend({
             queryResult.forEach((el) => {
                const obj = {
                   type: {
+                     id: Utils.getDeepKey("rtc_cm:type.dcterms:identifier", el),
                      name: Utils.getDeepKey("rtc_cm:type.dcterms:title", el),
                      icon: Utils.getDeepKey("rtc_cm:type.rtc_cm:iconUrl", el),
                   },
@@ -209,17 +253,23 @@ const BulkMoverComponent = Vue.extend({
       },
 
       moveWorkItems(previewOnly) {
-         this.tryMove(this.workItems, this.targetProjectArea, this.attributeDefinitions, previewOnly);
+         var typeObject = [];
+         for(let [k,v] of this.typeMap) {
+            typeObject.push({source: k, target: v});
+         }
+         this.tryMove(this.workItems, this.targetProjectArea, this.attributeDefinitions, typeObject, previewOnly);
       },
 
-      tryMove(workItems, projectArea, attributeDefinitions, previewOnly) {
+      tryMove(workItems, projectArea, attributeDefinitions, typeMapping, previewOnly) {
          this.loadInProgress = true;
          const data = {
             targetProjectArea: projectArea,
             workItems: workItems,
             mapping: attributeDefinitions,
+            typeMapping: typeMapping,
             previewOnly: previewOnly,
          };
+         console.log(data);
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/move`;
