@@ -1,0 +1,25 @@
+<div>
+   <h3>Work Item Type Mappings</h3>
+   <table class="ui celled table">
+      <thead>
+         <tr>
+            <th>Source Type</th>
+            <th>Target Type</th>
+         </tr>
+      </thead>
+      <tbody>
+         <template v-for="stype in sourceTypes">
+            <tr>
+               <td>
+                  <img :src="stype.icon"></img>{{stype.name}}
+               </td>
+               <td>
+                  <select @change="updateTypeMap(stype.id, stype.targetType)" v-model="stype.targetType">
+                     <option v-for="ttype in targetTypes" :value="ttype.id">{{ttype.name}}</option>
+                  </select>
+               </td>
+            </tr>
+         </template>
+      </tbody>
+   </table>
+</div>
