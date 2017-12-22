@@ -30,7 +30,7 @@ const BulkMoverComponent = Vue.extend({
          attributeDefinitions: [],
          query: null,
          serverError: null,
-         typeMap: new Map(),
+         typeMap: [],
          wiTable: {
             gridColumns: {
                type: {name: 'Type', data: (data) => {
@@ -123,13 +123,10 @@ const BulkMoverComponent = Vue.extend({
          return (this.targetProjectArea && this.targetProjectArea !== null && this.targetProjectArea !== '');
       },
       isTypeMappingDataAvailable: function() {
-         console.log("isTypeMappingDataAvailable: ", this.targetTypes.length);
          return this.targetTypes.length > 0;
       },
       areAllTypesMapped: function() {
-         console.log("areAllTypesMapped:", this.sourceTypes.length, this.typeMap.size);
-         return true;
-         //return this.sourceTypes.length === this.typeMap.size;
+         return this.sourceTypes.length === this.typeMap.length;
       },
       countSelected: function() {
          return this.wiTable.gridData.filter((x) => x.checked).length;
@@ -160,7 +157,6 @@ const BulkMoverComponent = Vue.extend({
 
       getTargetWorkItemTypes() {
          var projectArea = this.targetProjectArea;
-         console.log("projectArea: ", projectArea);
          this.loadInProgress = true;
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
@@ -170,7 +166,6 @@ const BulkMoverComponent = Vue.extend({
             headers: {"Accept": "application/json"}
          }).then((retData) => {
             this.targetTypes = retData;
-            console.log(this.targetTypes);
             this.loadInProgress = false;
          });
       },
@@ -253,11 +248,7 @@ const BulkMoverComponent = Vue.extend({
       },
 
       moveWorkItems(previewOnly) {
-         var typeObject = [];
-         for(let [k,v] of this.typeMap) {
-            typeObject.push({source: k, target: v});
-         }
-         this.tryMove(this.workItems, this.targetProjectArea, this.attributeDefinitions, typeObject, previewOnly);
+         this.tryMove(this.workItems, this.targetProjectArea, this.attributeDefinitions, this.typeMap, previewOnly);
       },
 
       tryMove(workItems, projectArea, attributeDefinitions, typeMapping, previewOnly) {
@@ -269,7 +260,6 @@ const BulkMoverComponent = Vue.extend({
             typeMapping: typeMapping,
             previewOnly: previewOnly,
          };
-         console.log(data);
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/move`;
