@@ -26,7 +26,7 @@ module.exports = function (config) {
                   loader: 'babel-loader',
                   exclude: /node_modules/,
                   query: {
-                     presets: ['es2015'],
+                     presets: ['env'],
                   }
                }
             ]

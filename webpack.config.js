@@ -49,7 +49,7 @@ module.exports = (env) => {
             exclude: /node_modules/,
             loader: 'babel-loader',
             query: {
-               presets: ['es2015'],
+               presets: ['env'],
             },
          }, {
             // integrate all HTML into the JS Bundle
