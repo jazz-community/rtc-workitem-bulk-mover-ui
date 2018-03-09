@@ -23,10 +23,6 @@
             <div class="header">The query did not return any result. {{serverError}}</div>
          </div>
 
-         <div v-if="!isQueryLoading && wiTable.gridData && wiTable.gridData.length < totalCount" class="ui info message">
-            <div class="header">The '{{query.name}}' query contains {{totalCount}} work items. To bring you the best experience, we have limited it to the first {{wiTable.gridData.length}} items. </div>
-         </div>
-
          <template v-if="selected">
             <h3>Target Project Area</h3>
 
