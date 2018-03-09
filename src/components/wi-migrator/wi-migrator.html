@@ -14,7 +14,7 @@
                <th></th>
                <th>New Value</th>
                <th>Old Value</th>
-               <th>Affected Work Items</th>
+               <th>Affected Work Item(s)</th>
             </tr>
          </thead>
          <tbody>
@@ -37,11 +37,14 @@
                         </option>
                      </select>
                      <span v-if="isApplyAllAllowed(valMap.chosen, attrDef.valueMappings.length)" :data-tooltip="'Apply this value to all new ' + attrDef.displayName + ' values'">
-                        <i style="cursor: pointer;" class="world icon" v-on:click="applyToAll(attrDef.identifier, valMap.chosen)"></i>
+                        <i style="cursor: pointer; font-weight: bold;" class="world icon" v-on:click="applyToAll(attrDef.identifier, valMap.chosen)"></i>
                      </span>
                      <i v-else class="world icon disabled"></i>
-                     <span v-if="hasRequiredChild(valMap.affectedWorkItems)" data-tooltip="At least one of the child items requires this value to be specified.">
+                     <span v-if="hasRequiredChild(valMap.affectedWorkItems)" data-tooltip="At least one of the items requires this value to be specified.">
                         <i style="color: red;" class="warning icon" ></i>
+                     </span>
+                     <span v-else data-tooltip="It is up to your decision if you want to map this attribute. Unless specified here, the default value will be used.">
+                        <i class="warning icon disabled"></i>
                      </span>
                   </td>
                   <td style="width: 26%" :title="valMap.oldValue.identifier">
@@ -72,7 +75,7 @@
                                     <i style="color: red;" class="warning icon"></i>
                                  </span>
                                  <span v-else data-tooltip="It is up to your decision if you want to map this attribute. Unless specified here, the default value will be used.">
-                                    <i style="color: blue;" class="info icon"></i>
+                                    <i class="warning icon disabled"></i>
                                  </span>
                               </td>
                               <td v-html="getTitledLink(affected.workItem)"></td>
