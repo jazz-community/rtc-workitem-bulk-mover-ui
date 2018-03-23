@@ -15,6 +15,15 @@ export default class JazzHelpers {
    }
 
    /**
+    * get the Unique Identifier of the project area currently in use
+    * @returns {string} current UUID
+    */
+   static getCurrentProjectAreaUUID() {
+      var projectArea = com.ibm.team.repository.web.client.init.InitializationData.get("com.ibm.team.rtc.common.service.projectAreaWebInitializer");
+      return projectArea.projectArea.id;
+   }
+
+   /**
     * get the unique work item URI based on a work item ID
     * @param {string} workItemId the work item ID for which we need the URI
     */
@@ -38,12 +47,12 @@ export default class JazzHelpers {
          defaultValue: null,
          defaultCategory: null,
          defaultParams: null,
-         suppressCrossRepoQueries: null,
+         suppressCrossRepoQueries: true,
          // prevent parameterized queries as I couldn't find out how to pass the runtime selections to the query service
          suppressParameterizedQueries: true,
          title: 'Choose a query',
          onOk: onOk,
       };
-      const el = new WIQV(args);
+      return new WIQV(args);
    }
 }

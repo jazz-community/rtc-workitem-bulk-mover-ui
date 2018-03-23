@@ -145,8 +145,10 @@ const BulkMoverComponent = Vue.extend({
       readProjectAreas() {
          this.loadInProgress = true;
          const base = JazzHelpers.getBaseUri();
+         const paUUID = JazzHelpers.getCurrentProjectAreaUUID();
+         const ignore = paUUID === null ? '' : `?ignore=${paUUID}`;
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
-         const url = `${base}/service/${service}/project-areas`;
+         const url = `${base}/service/${service}/project-areas${ignore}`;
          xhr.get(url, {
             handleAs: 'json',
             headers: {"Accept": "application/json"}
@@ -172,7 +174,10 @@ const BulkMoverComponent = Vue.extend({
       },
 
       loadQuery() {
-         JazzHelpers.getQueryDialog(this.querySelected);
+         var el = JazzHelpers.getQueryDialog(this.querySelected);
+         setTimeout(function() {
+            el.contentWidget.areaSelect.disabled = true;
+         }, 100);
       },
 
       querySelected(data) {
