@@ -54,16 +54,16 @@
                   <button v-bind:class="{ disabled: (!areAllTypesMapped || isDataMissing), loading: isQueryLoading }" class="ui button primary" v-on:click="moveWorkItems(false)">Move {{countSelected}} Work Items</button>
                </div>
 
-               <div v-if="moveSuccessful" class="ui success message">
-                  <div class="header">Work Item Move Successful!</div>
-                  <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project area successfully.</p>
-               </div>
                <div v-if="moveSuccessful === false && attributeDefinitions.length > 0" class="ui warning message">
                   <div class="header">Your Work Items are not moved yet.</div>
                   <p>You have to provide at least the required values in order to be able to move the selected work items.</p>
                   <p v-if="serverError !== null">{{serverError}}</p>
                </div>
             </template>
+            <div v-if="moveSuccessful" class="ui success message">
+               <div class="header">Work Item Move Successful!</div>
+               <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project area successfully.</p>
+            </div>
          </template>
       </template>
 	</div>
