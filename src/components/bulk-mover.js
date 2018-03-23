@@ -229,7 +229,8 @@ const BulkMoverComponent = Vue.extend({
                   category: Utils.getDeepKey("rtc_cm:filedAgainst.rtc_cm:hierarchicalName", el),
                   target: Utils.getDeepKey("rtc_cm:plannedFor.dcterms:title", el),
                   uri: el["rdf:about"],
-                  checked: true
+                  checked: true,
+                  moved: false,
                };
                this.wiTable.gridData.push(obj);
             });
@@ -274,7 +275,12 @@ const BulkMoverComponent = Vue.extend({
          }).then((retData) => {
             if(retData.successful && retData.mapping && retData.mapping.length > 0) {
                this.moveSuccessful = true;
+               this.targetTypes = [];
                this.attributeDefinitions = [];
+               this.selected.forEach((wi) => {
+                  wi.checked = false;
+                  wi.moved = true;
+               });
             } else {
                this.moveSuccessful = false;
                this.serverError = retData.error || null;

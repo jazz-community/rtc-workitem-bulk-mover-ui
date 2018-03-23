@@ -11,7 +11,7 @@
             </th>
          </tr>
          <tr>
-            <th>
+            <th colspan="2">
                <select @change="filterSelectChanged()" v-model="filterSelection">
                   <option v-for="option in getOptions()" v-bind:class="{disabled: option.disabled}" :value="option.id">{{option.name}}</option>
                </select>
@@ -25,11 +25,15 @@
          <tr v-for="entry in filteredData">
             <td>
                <div class="ui fitted checkbox">
-                  <input type="checkbox" v-model="entry.checked" />
+                  <input type="checkbox" v-model="entry.checked" :disabled="entry.moved" />
                   <label><!-- Important: must have a label!--></label>
                </div>
             </td>
-            <td v-bind:style="{opacity: entry.checked ? 1 : 0.5 }"
+            <td>
+               <span style="color: green;" v-if="entry.moved">Moved</span>
+               <span v-else>&nbsp;</span>
+            </td>
+            <td v-bind:style="{opacity: entry.checked && !entry.moved ? 1 : 0.5}"
                 v-html="columns[key].data(entry)"
                 v-for="key in Object.keys(columns)">
             </td>

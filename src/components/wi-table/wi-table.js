@@ -66,7 +66,7 @@ const WorkItemTableComponent = Vue.extend({
       },
 
       updateChecked(data, checked) {
-         data.forEach((x) => x.checked = checked);
+         data.filter((x) => !x.moved).forEach((x) => x.checked = checked);
       },
    },
 
