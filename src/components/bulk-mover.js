@@ -77,7 +77,7 @@ const BulkMoverComponent = Vue.extend({
          totalCount: 0,
          projectAreas: [],
          projectAreaSelected: false,
-         moveSuccessful: null,
+         moveSuccessful: false,
          loadInProgress: false,
       };
    },
@@ -139,7 +139,7 @@ const BulkMoverComponent = Vue.extend({
          this.wiTable.gridData = [];
          this.attributeDefinitions = [];
          this.totalCount = 0;
-         this.moveSuccessful = null;
+         this.moveSuccessful = false;
       },
 
       readProjectAreas() {
@@ -169,6 +169,7 @@ const BulkMoverComponent = Vue.extend({
             headers: {"Accept": "application/json"}
          }).then((retData) => {
             this.targetTypes = retData;
+            this.attributeDefinitions = [];
             this.loadInProgress = false;
          });
       },

@@ -26,12 +26,11 @@
          <template v-if="selected">
             <h3>Target Project Area</h3>
 
-            <select v-model="targetProjectArea" v-bind:class="{ disabled: (isLoading || isTypeMappingDataAvailable) }" class="ui search dropdown">
+            <select @change="getTargetWorkItemTypes()" v-model="targetProjectArea" v-bind:class="{ disabled: (isLoading) }" class="ui search dropdown">
                <option v-for="pa in projectAreas" :id="pa.id">{{pa.name}}</option>
             </select>
             <br /><br />
 
-            <button v-if="!isTypeMappingDataAvailable" class="ui button primary" v-bind:class="{disabled: !isProjectAreaSelected}" v-on:click="getTargetWorkItemTypes()">Next ></button>
             <template v-if="isTypeMappingDataAvailable">
                <wi-type-mapper
                   :type-map="typeMap"
@@ -58,11 +57,6 @@
                <div v-if="moveSuccessful" class="ui success message">
                   <div class="header">Work Item Move Successful!</div>
                   <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project area successfully.</p>
-               </div>
-               <div v-if="moveSuccessful === false && attributeDefinitions.length <= 0" class="ui error message">
-                  <div class="header"> Work Item Move failed!</div>
-                  <p v-if="serverError !== null">{{serverError}}</p>
-                  <p v-else>Could not determine at least one of the specified Work Items. This might happen if you are trying to move a Work Item that has already been moved previously</p>
                </div>
                <div v-if="moveSuccessful === false && attributeDefinitions.length > 0" class="ui warning message">
                   <div class="header">Your Work Items are not moved yet.</div>
