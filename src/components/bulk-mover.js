@@ -111,7 +111,9 @@ const BulkMoverComponent = Vue.extend({
             var type = srcTypes[i];
             var keys = this.typeMap.filter((mapEntry) => mapEntry.source.id === type.id);
             if(keys.length == 0) {
-               this.typeMap.push({source: type, targetId: null});
+               var hasTargetWithSameId = this.targetTypes.filter((x) => x.id === type.id).length === 1;
+               var targetId = hasTargetWithSameId ? type.id : null;
+               this.typeMap.push({source: type, targetId: targetId});
             }
          }
          return this.typeMap.filter((x) => idList.includes(x.source.id));
@@ -172,6 +174,7 @@ const BulkMoverComponent = Vue.extend({
          var projectArea = this.targetProjectArea;
          this.loadInProgress = true;
          this.typeMap = [];
+         this.targetTypes = [];
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/types?project-area=${projectArea}`;
