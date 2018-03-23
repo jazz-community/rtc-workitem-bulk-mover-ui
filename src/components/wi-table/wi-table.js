@@ -78,7 +78,7 @@ const WorkItemTableComponent = Vue.extend({
             data = data.filter(function (row) {
                return Object.keys(row).some(function (key) {
                   var el = row[key];
-                  if(typeof el === "object" && typeof el.name !== "undefined" && typeof el.name !== "object") {
+                  if(el !== null && typeof el === "object" && typeof el.name !== "undefined" && typeof el.name !== "object") {
                      el = el.name;
                   }
                   var lowered = String(el).toLowerCase();
