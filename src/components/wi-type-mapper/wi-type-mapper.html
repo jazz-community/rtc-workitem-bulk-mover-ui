@@ -8,13 +8,13 @@
          </tr>
       </thead>
       <tbody>
-         <template v-for="stype in sourceTypes">
+         <template v-for="stype in typeMap">
             <tr>
                <td>
-                  <img :src="stype.icon"></img>{{stype.name}}
+                  <img :src="stype.source.icon"></img>{{stype.source.name}}
                </td>
                <td>
-                  <select @change="updateTypeMap(stype.id, stype.targetType)" v-model="stype.targetType">
+                  <select @change="updateTypeMap(stype.source.id, stype.targetId)" v-model="stype.targetId">
                      <option v-for="ttype in targetTypes" :value="ttype.id">{{ttype.name}}</option>
                   </select>
                </td>

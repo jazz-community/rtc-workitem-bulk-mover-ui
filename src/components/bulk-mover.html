@@ -33,8 +33,7 @@
 
             <template v-if="isTypeMappingDataAvailable">
                <wi-type-mapper
-                  :type-map="typeMap"
-                  :source-types="sourceTypes"
+                  :type-map="sourceTypes"
                   :target-types="targetTypes">
                </wi-type-mapper>
 
@@ -63,6 +62,7 @@
             <div v-if="moveSuccessful" class="ui success message">
                <div class="header">Work Item Move Successful!</div>
                <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project area successfully.</p>
+               <button class="ui button mini" v-on:click="moveSuccessful = false;">Dismiss</button>
             </div>
          </template>
       </template>

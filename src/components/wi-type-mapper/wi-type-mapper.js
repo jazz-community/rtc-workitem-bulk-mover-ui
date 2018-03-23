@@ -5,7 +5,6 @@ const WorkItemTypeMapperComponent = Vue.extend({
    template,
    components: {},
    props: {
-      sourceTypes: Array,
       targetTypes: Array,
       typeMap: Array,
    },
@@ -16,12 +15,10 @@ const WorkItemTypeMapperComponent = Vue.extend({
    },
 
    methods: {
-      updateTypeMap(source, target) {
-         var keys = this.typeMap.filter((mapEntry) => mapEntry.source === source);
+      updateTypeMap(source, targetId) {
+         var keys = this.typeMap.filter((mapEntry) => mapEntry.source.id === source);
          if(keys.length > 0) {
-            keys.map((mapEntry) => mapEntry.target = target);
-         } else {
-            this.typeMap.push({source: source, target: target});
+            keys.map((mapEntry) => mapEntry.targetId = targetId);
          }
       },
    }

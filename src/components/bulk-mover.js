@@ -98,13 +98,23 @@ const BulkMoverComponent = Vue.extend({
       },
       sourceTypes: function() {
          this.polyfillFindIndexForIE();
-         return this.wiTable.gridData
+         var srcTypes = this.wiTable.gridData
             .filter((x) => x.checked)
             .map((x) => x.type)
             .filter((item, index, self) =>
                   index === self.findIndex((t) => (
                      t.id === item.id
                   )));
+         var idList = srcTypes.map((x) => x.id);
+         var len = srcTypes.length;
+         for(var i = 0; i < len; i++) {
+            var type = srcTypes[i];
+            var keys = this.typeMap.filter((mapEntry) => mapEntry.source.id === type.id);
+            if(keys.length == 0) {
+               this.typeMap.push({source: type, targetId: null});
+            }
+         }
+         return this.typeMap.filter((x) => idList.includes(x.source.id));
       },
       selected: function() {
          return this.wiTable.gridData.length > 0 && this.wiTable.gridData
@@ -124,10 +134,10 @@ const BulkMoverComponent = Vue.extend({
          return (this.targetProjectArea && this.targetProjectArea !== null && this.targetProjectArea !== '');
       },
       isTypeMappingDataAvailable: function() {
-         return this.targetTypes.length > 0;
+         return this.targetTypes.length > 0 && this.sourceTypes.length > 0;
       },
       areAllTypesMapped: function() {
-         return this.sourceTypes.length === this.typeMap.length;
+         return this.sourceTypes.filter((x) => x.targetId === null).length === 0;
       },
       countSelected: function() {
          return this.wiTable.gridData.filter((x) => x.checked).length;
@@ -161,6 +171,7 @@ const BulkMoverComponent = Vue.extend({
       getTargetWorkItemTypes() {
          var projectArea = this.targetProjectArea;
          this.loadInProgress = true;
+         this.typeMap = [];
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/types?project-area=${projectArea}`;
@@ -265,7 +276,7 @@ const BulkMoverComponent = Vue.extend({
             targetProjectArea: projectArea,
             workItems: workItems,
             mapping: attributeDefinitions,
-            typeMapping: typeMapping,
+            typeMapping: typeMapping.map((x) => { return {source: x.source.id, target: x.targetId}; }),
             previewOnly: previewOnly,
          };
          const base = JazzHelpers.getBaseUri();
@@ -281,7 +292,6 @@ const BulkMoverComponent = Vue.extend({
          }).then((retData) => {
             if(retData.successful && retData.mapping && retData.mapping.length > 0) {
                this.moveSuccessful = true;
-               this.targetTypes = [];
                this.attributeDefinitions = [];
                this.selected.forEach((wi) => {
                   wi.checked = false;
