@@ -189,10 +189,19 @@ const BulkMoverComponent = Vue.extend({
       },
 
       loadQuery() {
-         var el = JazzHelpers.getQueryDialog(this.querySelected);
-         setTimeout(function() {
-            el.contentWidget.areaSelect.disabled = true;
-         }, 100);
+         var queryDialog = JazzHelpers.getQueryDialog(this.querySelected);
+         this.disablePASelectorInQuery(queryDialog, 0);
+      },
+
+      disablePASelectorInQuery(queryDialog, attempt) {
+         var self = this;
+         if(typeof queryDialog.contentWidget !== "undefined" && typeof queryDialog.contentWidget.areaSelect !== "undefined") {
+            queryDialog.contentWidget.areaSelect.disabled = true;
+         } else if(attempt < 15) {
+            setTimeout(function() {
+               self.disablePASelectorInQuery(queryDialog, ++attempt);
+            }, 50);
+         }
       },
 
       querySelected(data) {
