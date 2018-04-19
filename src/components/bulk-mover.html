@@ -64,6 +64,13 @@
                <p>All the selected Work Items have been moved to '{{targetProjectArea}}' project area successfully.</p>
                <button class="ui button mini" v-on:click="moveSuccessful = false;">Dismiss</button>
             </div>
+
+            <div v-if="moveSuccessful === false && attributeDefinitions.length === 0 && serverError !== null" class="ui error message">
+               <div class="header">Work Item Move failed!</div>
+               <p>Unable to move Work Items and the server could not determine a useful mapping for you. This is due to the following error:</p>
+               <p>{{serverError}}</p>
+               <button class="ui button mini">Dismiss</button>
+            </div>
          </template>
       </template>
 	</div>

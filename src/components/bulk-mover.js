@@ -157,8 +157,6 @@ const BulkMoverComponent = Vue.extend({
       readProjectAreas() {
          this.loadInProgress = true;
          const base = JazzHelpers.getBaseUri();
-         const paUUID = JazzHelpers.getCurrentProjectAreaUUID();
-         const ignore = paUUID === null ? '' : `?ignore=${paUUID}`;
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/project-areas${ignore}`;
          xhr.get(url, {
@@ -302,7 +300,7 @@ const BulkMoverComponent = Vue.extend({
                'Content-Type': 'json',
             },
          }).then((retData) => {
-            if(retData.successful && retData.mapping && retData.mapping.length > 0) {
+            if(retData.successful && retData.mapping) {
                this.moveSuccessful = true;
                this.attributeDefinitions = [];
                this.selected.forEach((wi) => {
@@ -319,6 +317,8 @@ const BulkMoverComponent = Vue.extend({
             this.loadInProgress = false;
          }, (err) => {
             this.moveSuccessful = false;
+            this.attributeDefinitions = [];
+            this.serverError = err.message;
             this.loadInProgress = false;
          }, (evt) => {
             // Handle a progress event from the request if browser supports XHR2
