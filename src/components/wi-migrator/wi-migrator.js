@@ -3,6 +3,8 @@ import template from './wi-migrator.html';
 import style from './wi-migrator.scss';
 import JazzHelpers from '../jazz-helpers/jazz-helpers';
 
+const multiString = "[Multiple Values Selected...]";
+
 const WorkItemMigratorComponent = Vue.extend({
    style,
    template,
@@ -29,7 +31,11 @@ const WorkItemMigratorComponent = Vue.extend({
       },
 
       isApplyAllAllowed(chosen, nrOfValueMappings) {
-         return chosen !== 'multiple' && nrOfValueMappings > 1;
+         return chosen !== multiString && nrOfValueMappings > 1;
+      },
+
+      isMulti(chosen) {
+         return chosen === multiString;
       },
 
       applyToAll(attrId, valId) {
@@ -45,32 +51,36 @@ const WorkItemMigratorComponent = Vue.extend({
          });
       },
 
-      subChanged(attrId, workItemId, chosen) {
+      subChanged(attrDefId, attrId, workItemId, chosen) {
          this.attributeDefinitions.forEach(attrDef => {
-            attrDef.valueMappings.forEach(valMap => {
-               if(valMap.oldValue.identifier === attrId) {
-                  const multipleChild = valMap.affectedWorkItems.some(wi => {
-                     return wi.chosen !== chosen;
-                  });
-                  if(multipleChild) {
-                     valMap.chosen = "multiple";
-                  } else {
-                     valMap.chosen = chosen;
+            if(attrDef.identifier === attrDefId) {
+               attrDef.valueMappings.forEach(valMap => {
+                  if(valMap.oldValue.identifier === attrId) {
+                     const multipleChild = valMap.affectedWorkItems.some(wi => {
+                        return wi.chosen !== chosen;
+                     });
+                     if(multipleChild) {
+                        valMap.chosen = multiString;
+                     } else {
+                        valMap.chosen = chosen;
+                     }
                   }
-               }
-            });
+               });
+            }
          });
       },
 
-      topChanged(attrId, chosen) {
+      topChanged(attrDefId, attrId, chosen) {
          this.attributeDefinitions.forEach(attrDef => {
-            attrDef.valueMappings.forEach(valMap => {
-               if(valMap.oldValue.identifier === attrId) {
-                  valMap.affectedWorkItems.forEach(wi => {
-                     wi.chosen = chosen;
-                  });
-               }
-            });
+            if(attrDef.identifier === attrDefId) {
+               attrDef.valueMappings.forEach(valMap => {
+                  if(valMap.oldValue.identifier === attrId) {
+                     valMap.affectedWorkItems.forEach(wi => {
+                        wi.chosen = chosen;
+                     });
+                  }
+               });
+            }
          });
       },
 

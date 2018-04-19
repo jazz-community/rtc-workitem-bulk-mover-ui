@@ -29,9 +29,11 @@
                      </span>
                   </td>
                   <td style="width: 44%">
-                     <select style="width: 86%" @change="topChanged(valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen">
-                        <option selected value="nothing"></option>
-                        <option v-if="valMap.affectedWorkItems.length > 1" disabled value="multiple">[Multiple Values Selected...]</option>
+                     <input v-if="attrDef.isPrimitive" style="width: 86%" v-bind:style="{color: isMulti(valMap.chosen) ? 'orange' : 'black'}" @change="topChanged(attrDef.identifier, '', valMap.chosen)" v-model="valMap.chosen"></input>
+                     <span v-else-if="valMap.allowedValues.length == 0 && valMap.error" style="width: 86%; color: red; display: inline-block;">{{valMap.error}}</span>
+                     <select v-else style="width: 86%" v-bind:style="{color: isMulti(valMap.chosen) ? 'orange' : 'black'}" @change="topChanged(attrDef.identifier, valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen">
+                        <option selected value=""></option>
+                        <option v-if="valMap.affectedWorkItems.length > 1" disabled value="[Multiple Values Selected...]">[Multiple Values Selected...]</option>
                         <option :value="val.identifier" :id="val.identifier" v-for="val in valMap.allowedValues">
                            {{hierarchify(val.displayName)}}
                         </option>
@@ -65,8 +67,10 @@
                         <tbody>
                            <tr v-for="affected in valMap.affectedWorkItems">
                               <td style="width: 46%">
-                                 <select @change="subChanged(valMap.oldValue.identifier, affected.workItem.id, affected.chosen)" v-model="affected.chosen">
-                                    <option selected value="nothing"></option>
+                                 <input v-if="attrDef.isPrimitive" style="width: 86%"  @change="subChanged(attrDef.identifier, '', affected.workItem.id, affected.chosen)" v-model="affected.chosen"></input>
+                                 <span v-else-if="valMap.allowedValues.length == 0 && valMap.error" style="width: 86%; color: red; display: inline-block;">{{valMap.error}}</span>
+                                 <select v-else @change="subChanged(attrDef.identifier, valMap.oldValue.identifier, affected.workItem.id, affected.chosen)" v-model="affected.chosen">
+                                    <option selected value=""></option>
                                     <option style="width: 90%" :value="val.identifier" :id="val.identifier" v-for="val in valMap.allowedValues">
                                        {{hierarchify(val.displayName)}}
                                     </option>
