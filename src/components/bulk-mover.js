@@ -158,7 +158,7 @@ const BulkMoverComponent = Vue.extend({
          this.loadInProgress = true;
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
-         const url = `${base}/service/${service}/project-areas${ignore}`;
+         const url = `${base}/service/${service}/project-areas`;
          xhr.get(url, {
             handleAs: 'json',
             headers: {"Accept": "application/json"}
