@@ -61,7 +61,7 @@ const BulkMoverComponent = Vue.extend({
                isPagingRelevant: false,
                action: () => {
                   if(this.query) {
-                     this.runSelectedQuery();
+                     this.refreshQuery();
                   }
                }
             },{
@@ -216,6 +216,12 @@ const BulkMoverComponent = Vue.extend({
       onQuerySelected(data) {
          this.query = {name: data.name, id: data.itemId, offSet: 0};
          this.runSelectedQuery();
+      },
+
+      refreshQuery() {
+         if(confirm("This will re-run the specified query. Continue?")) {
+            this.runSelectedQuery();
+         }
       },
 
       runSelectedQuery() {
