@@ -184,6 +184,7 @@ const BulkMoverComponent = Vue.extend({
          this.loadInProgress = true;
          this.typeMap = [];
          this.targetTypes = [];
+         this.serverError = null;
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/types?project-area=${projectArea}`;
