@@ -1,7 +1,9 @@
 import Vue from 'vue';
+import style from './wi-table.scss';
 import template from './wi-table.html';
 
 const WorkItemTableComponent = Vue.extend({
+   style,
    template,
    components: {},
    props: {
