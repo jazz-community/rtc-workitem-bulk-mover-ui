@@ -69,7 +69,7 @@
                <div class="header">Work Item Move failed!</div>
                <p>Unable to move Work Items and the server could not determine a useful mapping for you. This is due to the following error:</p>
                <p>{{serverError}}</p>
-               <button class="ui button mini">Dismiss</button>
+               <button class="ui button mini" v-on:click="serverError = null;">Dismiss</button>
             </div>
          </template>
       </template>
