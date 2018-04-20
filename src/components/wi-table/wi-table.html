@@ -39,12 +39,12 @@
             </td>
          </tr>
          <tr v-if="filteredData.length == 0">
-            <td :colspan="Object.keys(columns).length + 1">Search did not match any result</td>
+            <td :colspan="Object.keys(columns).length + 2">Search did not match any result</td>
          </tr>
       </tbody>
       <tfoot class="full-width">
          <tr>
-            <th :colspan="Object.keys(columns).length + 1">
+            <th :colspan="Object.keys(columns).length + 2">
                <div style="display: flex; align-items: center; justify-content: space-between;">
                   <span v-if="filteredData.length < totalCount"><b class="highlight">{{filteredData.length}} / {{totalCount}}</b> Work Items loaded</span>
                   <span v-else><b>All</b> Work Items loaded</span>

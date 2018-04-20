@@ -56,8 +56,18 @@ const BulkMoverComponent = Vue.extend({
                }},
             },
             buttons: [{
+               name: `Refresh Query`,
+               active: true,
+               isPagingRelevant: false,
+               action: () => {
+                  if(this.query) {
+                     this.runSelectedQuery();
+                  }
+               }
+            },{
                name: `Load All Remaining`,
                active: true,
+               isPagingRelevant: true,
                action: () => {
                   if(this.query && this.query.nextPage !== null) {
                      this.loadNextPage(this.query.nextPage, true);
@@ -66,6 +76,7 @@ const BulkMoverComponent = Vue.extend({
             },{
                name: `Load Next ${pageSize}`,
                active: true,
+               isPagingRelevant: true,
                action: () => {
                   if(this.query && this.query.nextPage !== null) {
                      this.loadNextPage(this.query.nextPage, false);
@@ -187,7 +198,7 @@ const BulkMoverComponent = Vue.extend({
       },
 
       loadQuery() {
-         var queryDialog = JazzHelpers.getQueryDialog(this.querySelected);
+         var queryDialog = JazzHelpers.getQueryDialog(this.onQuerySelected);
          this.disablePASelectorInQuery(queryDialog, 0);
       },
 
@@ -202,10 +213,14 @@ const BulkMoverComponent = Vue.extend({
          }
       },
 
-      querySelected(data) {
+      onQuerySelected(data) {
+         this.query = {name: data.name, id: data.itemId, offSet: 0};
+         this.runSelectedQuery();
+      },
+
+      runSelectedQuery() {
          this.resetValues();
          this.loadInProgress = true;
-         this.query = {name: data.name, id: data.itemId, offSet: 0};
          const props = [
             "rtc_cm:type{dcterms:title,dcterms:identifier,rtc_cm:iconUrl}",
             "dcterms:identifier",
@@ -234,7 +249,7 @@ const BulkMoverComponent = Vue.extend({
             this.totalCount = retData["oslc:responseInfo"]["oslc:totalCount"];
             this.query.nextPage = retData["oslc:responseInfo"]["oslc:nextPage"] || null;
 
-            this.wiTable.buttons.forEach(b => {b.active = this.query.nextPage !== null;});
+            this.wiTable.buttons.filter((x) => x.isPagingRelevant).forEach(b => {b.active = this.query.nextPage !== null;});
 
             queryResult.forEach((el) => {
                const obj = {
