@@ -16,7 +16,7 @@
    color: gray;
    font-weight: bold;
    text-decoration: none;
-   &:hover {
-      text-decoration: underline;
-   }
 }
+.wibm-ui-footer a:hover {
+    text-decoration: underline;
+ }

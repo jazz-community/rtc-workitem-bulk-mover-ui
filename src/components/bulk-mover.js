@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import xhr from 'dojo/request/xhr';
 import template from './bulk-mover.html';
-import style from './bulk-mover.scss';
+import style from './bulk-mover.css';
 import JazzHelpers from './jazz-helpers/jazz-helpers';
 import Utils from './jazz-helpers/Utils';
-import '../styles/ui.scss';
+import '../styles/ui.css';
 import parser from 'dojo/parser';
 import dom from 'dojo/dom';
 import packageJson from '../../package.json';

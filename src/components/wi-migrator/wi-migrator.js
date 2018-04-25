@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import template from './wi-migrator.html';
-import style from './wi-migrator.scss';
+import style from './wi-migrator.css';
 import JazzHelpers from '../jazz-helpers/jazz-helpers';
 
 const multiString = "[Multiple Values Selected...]";

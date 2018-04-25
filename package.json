@@ -26,19 +26,15 @@
     "karma-webpack": "^3.0.0",
     "phantomjs": "^2.1.7",
     "raw-loader": "^0.5.1",
-    "sass.js": "^0.10.9",
-    "sassjs-loader": "^1.0.0",
     "semantic-ui-css": "^2.3.1",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
     "vue": "^2.5.16",
-    "webpack": "^2.7.0",
-    "webpack-dev-server": "^3.1.3"
+    "webpack": "^2.7.0"
   },
   "scripts": {
     "build": "webpack --config ./webpack.config.js --env.mode=prod",
     "jazz": "webpack -w --env.mode=prod",
-    "start": "webpack-dev-server --inline --hot --open --port 8080 --env.mode=dev",
     "test": "karma start ./karma.conf.js"
   },
   "author": "Lukas Steiger, Siemens AG",

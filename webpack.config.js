@@ -34,6 +34,11 @@ module.exports = (env) => {
       },
       module: {
          rules: [{
+            // compile SASS to css and integrate into JS bundle
+            test: /\.css$/,
+            exclude: /node_modules/,
+            use: ['style-loader', 'css-loader'],
+         },{
             // include all project css files & Semantic UI, but not anything else from node_modules
             test: /\.css$/,
             include: /node_modules(\/|\\)semantic-ui-css(\/|\\)components/,
@@ -56,12 +61,7 @@ module.exports = (env) => {
             test: /\.html$/,
             exclude: /node_modules/,
             loader: 'raw-loader',
-         }, {
-            // compile SASS to css and integrate into JS bundle
-            test: /\.scss$/,
-            exclude: /node_modules/,
-            use: ['style-loader', 'css-loader', 'sassjs-loader'],
-         },
+         }, 
 
          // these entries are nexessary to resolve all semantic UI assets referenced through an @URL statement
          {test:/.png$/,loader:'url-loader',query:{mimetype:'image/png',name:'./node_modules/semantic-ui-css/themes/default/assets/images/flags.png'}},
