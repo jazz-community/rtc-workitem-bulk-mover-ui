@@ -14,7 +14,7 @@
                   <img :src="stype.source.icon"></img>{{stype.source.name}}
                </td>
                <td>
-                  <select @change="updateTypeMap(stype.source.id, stype.targetId)" v-model="stype.targetId">
+                  <select :disabled="showMigrator" @change="updateTypeMap(stype.source.id, stype.targetId)" v-model="stype.targetId">
                      <option v-for="ttype in targetTypes" :value="ttype.id">{{ttype.name}}</option>
                   </select>
                </td>

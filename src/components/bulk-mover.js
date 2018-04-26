@@ -152,6 +152,9 @@ const BulkMoverComponent = Vue.extend({
       areAllTypesMapped: function() {
          return this.sourceTypes.filter((x) => x.targetId === null).length === 0;
       },
+      showMigrator: function() {
+         return this.attributeDefinitions && this.attributeDefinitions.length > 0;
+      },
       countSelected: function() {
          return this.wiTable.gridData.filter((x) => x.checked).length;
       }

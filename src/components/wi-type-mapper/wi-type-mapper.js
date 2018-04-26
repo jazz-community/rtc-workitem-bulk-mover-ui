@@ -5,6 +5,7 @@ const WorkItemTypeMapperComponent = Vue.extend({
    template,
    components: {},
    props: {
+      showMigrator: Boolean,
       targetTypes: Array,
       typeMap: Array,
    },

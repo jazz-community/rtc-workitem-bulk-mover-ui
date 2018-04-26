@@ -33,13 +33,14 @@
 
             <template v-if="isTypeMappingDataAvailable">
                <wi-type-mapper
+                  :show-migrator="showMigrator"
                   :type-map="sourceTypes"
                   :target-types="targetTypes">
                </wi-type-mapper>
 
                <br /><br />
 
-               <div v-if="attributeDefinitions && attributeDefinitions.length > 0">
+               <div v-if="showMigrator">
                   <wi-migrator
                      :server-error="serverError"
                      :attribute-definitions="attributeDefinitions"
