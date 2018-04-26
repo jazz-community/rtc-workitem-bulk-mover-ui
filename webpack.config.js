@@ -4,20 +4,11 @@ const JazzUpdateSitePlugin = require('jazz-update-site-webpack-plugin');
 const packageJson = require('./package.json');
 const glob = require('glob');
 
-const modeConfig = {
-   dev: {
-      baseUrl: '"http://localhost:8080/resources/ui/"',
-   },
-   prod: {
-      baseUrl: 'net.jazz.ajax._contextRoot + "/web/com.siemens.bt.jazz.ui.WorkItemBulkMover/ui/"',
-   },
-};
+const baseUrl = 'net.jazz.ajax._contextRoot + "/web/com.siemens.bt.jazz.ui.WorkItemBulkMover/ui/"';
 
 module.exports = (env) => {
-   console.info(`Environment is set to '${env.mode}'`); // eslint-disable-line no-console
-   env.buildUUID && console.info(`Build UUID is passed along: '${env.buildUUID}'`);
+   env && env.buildUUID && console.info(`Build UUID is passed along: '${env.buildUUID}'`);
 
-   const mode = modeConfig[env.mode] || modeConfig.dev;
    const version = env.buildUUID || packageJson.version;
 
    const semanticPattern = glob.sync("./node_modules/semantic-ui-css/components/!(reset|site)*.min.+(css|js)");
@@ -34,7 +25,7 @@ module.exports = (env) => {
       },
       module: {
          rules: [{
-            // compile SASS to css and integrate into JS bundle
+            // integrate all component CSS files into JS bundle
             test: /\.css$/,
             exclude: /node_modules/,
             use: ['style-loader', 'css-loader'],
@@ -61,7 +52,7 @@ module.exports = (env) => {
             test: /\.html$/,
             exclude: /node_modules/,
             loader: 'raw-loader',
-         }, 
+         },
 
          // these entries are nexessary to resolve all semantic UI assets referenced through an @URL statement
          {test:/.png$/,loader:'url-loader',query:{mimetype:'image/png',name:'./node_modules/semantic-ui-css/themes/default/assets/images/flags.png'}},
@@ -93,13 +84,13 @@ module.exports = (env) => {
          // modify compiled bundle in a way that Jazz will be able to parse and execute it
          new DojoModuleWrapperPlugin({
             BulkMover: {
-               baseUrl: mode.baseUrl,
+               baseUrl: baseUrl,
                moduleName: 'BulkMoverBundle',
             },
          }),
 
          // if set to production, pack the plugin as Jazz compatible update-site package
-         modeConfig.prod && new JazzUpdateSitePlugin({
+         new JazzUpdateSitePlugin({
             appType: 'ccm',
             projectId: 'com.siemens.bt.jazz.ui.WorkItemBulkMover',
             acceptGlobPattern: [
@@ -116,7 +107,7 @@ module.exports = (env) => {
             },
          }),
 
-         modeConfig.prod && new JazzUpdateSitePlugin({
+         new JazzUpdateSitePlugin({
             appType: 'ccm',
             projectId: 'com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider',
             pluginBasePath: 'integration/menuProvider/',
