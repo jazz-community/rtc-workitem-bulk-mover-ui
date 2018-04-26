@@ -9,7 +9,7 @@ const baseUrl = 'net.jazz.ajax._contextRoot + "/web/com.siemens.bt.jazz.ui.WorkI
 module.exports = (env) => {
    env && env.buildUUID && console.info(`Build UUID is passed along: '${env.buildUUID}'`);
 
-   const version = env.buildUUID || packageJson.version;
+   const version = env && env.buildUUID || packageJson.version;
 
    const semanticPattern = glob.sync("./node_modules/semantic-ui-css/components/!(reset|site)*.min.+(css|js)");
 

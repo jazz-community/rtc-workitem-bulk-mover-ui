@@ -30,11 +30,11 @@
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
     "vue": "^2.5.16",
-    "webpack": "^2.7.0"
+    "webpack": "^3.11.0"
   },
   "scripts": {
-    "build": "webpack --config ./webpack.config.js --env.mode=prod",
-    "jazz": "webpack -w --env.mode=prod",
+    "build": "webpack --config ./webpack.config.js",
+    "jazz": "webpack -w",
     "test": "karma start ./karma.conf.js"
   },
   "author": "Lukas Steiger, Siemens AG",
