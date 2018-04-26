@@ -46,7 +46,7 @@
          <tr>
             <th :colspan="Object.keys(columns).length + 2">
                <div style="display: flex; align-items: center; justify-content: space-between;">
-                  <span v-if="filteredData.length < totalCount"><b class="highlight">{{filteredData.length}} / {{totalCount}}</b> Work Items loaded</span>
+                  <span v-if="filteredData.length < totalCount"><b class="highlight">{{selectedCount}} / {{totalCount}}</b> Work Items loaded</span>
                   <span v-else><b>All</b> Work Items loaded</span>
                   <span>
                      <button v-bind:class="{ disabled: !button.active }" class="ui button right floated tiny" v-on:click="button.action" v-for="button in buttons">{{button.name}}</button>

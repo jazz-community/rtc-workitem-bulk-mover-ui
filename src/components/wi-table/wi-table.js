@@ -15,21 +15,23 @@ const WorkItemTableComponent = Vue.extend({
 
    data() {
       return {
+         selectedCount: 0,
          filterSelection: '',
          filterKey: '',
       };
    },
 
    methods: {
-      countSelected(data) {
-         return data.filter((x) => x.checked).length;
+      countSelected() {
+         this.selectedCount = this.workItems.filter((x) => x.checked).length;
+         return this.selectedCount;
       },
 
       getOptions() {
          let options = [{id: "custom", name: "", disabled: true}];
          const data = this.filteredData;
          if(data.length >= 0) {
-            const selected = this.countSelected(data);
+            const selected = this.countSelected();
             if(data.length < this.workItems.length) {
                if(selected > 0) {
                   options.push({id: "deselectFiltered", name: "Deselect Filtered", disabled: false});
