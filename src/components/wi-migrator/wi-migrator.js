@@ -90,13 +90,11 @@ const WorkItemMigratorComponent = Vue.extend({
          });
       },
 
-      hierarchify(val) {
-         const hierars = val.split('/');
-         let curVal = hierars[hierars.length - 1];
-         for (let i = 1; i < hierars.length; i++) {
-            curVal = `--${curVal}`;
-         }
-         return curVal;
+      createHierarchicalDisplayName(val) {
+         const trimmedIdString = val.identifier.replace(/^\/|\/$/g, '');
+         const pathEntries = trimmedIdString.split('/');
+         const depth = pathEntries.length >= 2 ? pathEntries.length - 2 : 0;
+         return "--".repeat(depth) + val.displayName;
       }
    }
 });

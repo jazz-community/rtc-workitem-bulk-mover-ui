@@ -35,7 +35,7 @@
                         <option selected value=""></option>
                         <option v-if="valMap.affectedWorkItems.length > 1" disabled value="[Multiple Values Selected...]">[Multiple Values Selected...]</option>
                         <option :value="val.identifier" :id="val.identifier" v-for="val in valMap.allowedValues">
-                           {{hierarchify(val.displayName)}}
+                           {{createHierarchicalDisplayName(val)}}
                         </option>
                      </select>
                      <span v-if="isApplyAllAllowed(valMap.chosen, attrDef.valueMappings.length)" :data-tooltip="'Apply this value to all new ' + attrDef.displayName + ' values'">
