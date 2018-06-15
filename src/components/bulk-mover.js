@@ -23,7 +23,8 @@ const BulkMoverComponent = Vue.extend({
 
    data() {
       return {
-         version: packageJson.version,
+         uiVersion: packageJson.version,
+         serviceVersion: "<unknown>",
          wiInput: '',
          targetProjectArea: '',
          targetTypes: [],
@@ -95,6 +96,7 @@ const BulkMoverComponent = Vue.extend({
 
    created() {
       this.readProjectAreas();
+      this.getServiceVersion();
    },
 
    mounted() {
@@ -166,6 +168,18 @@ const BulkMoverComponent = Vue.extend({
          this.attributeDefinitions = [];
          this.totalCount = 0;
          this.moveSuccessful = false;
+      },
+
+      getServiceVersion() {
+         const base = JazzHelpers.getBaseUri();
+         const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
+         const url = `${base}/service/${service}/info`;
+         xhr.get(url, {
+            handleAs: 'json',
+            headers: {"Accept": "application/json"}
+         }).then((retData) => {
+            this.serviceVersion = retData.version;
+         });
       },
 
       readProjectAreas() {
