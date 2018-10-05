@@ -6,4 +6,5 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: SIEMENS
 Bundle-Localization: plugin
 Require-Bundle: net.jazz.ajax;bundle-version="2.2.2000",
+ com.ibm.team.workitem.web,
  com.siemens.bt.jazz.ui.WorkItemBulkMover
