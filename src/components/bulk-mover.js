@@ -397,7 +397,7 @@ const BulkMoverComponent = Vue.extend({
                 while (k < len) {
                   // a. Let Pk be ! ToString(k).
                   // b. Let kValue be ? Get(O, Pk).
-                  // c. Let testResult be ToBoolean(? Call(predicate, T, « kValue, k, O »)).
+                  // c. Let testResult be ToBoolean(? Call(predicate, T, << kValue, k, O >>)).
                   // d. If testResult is true, return k.
                   var kValue = o[k];
                   if (predicate.call(thisArg, kValue, k, o)) {
@@ -437,7 +437,7 @@ const BulkMoverComponent = Vue.extend({
                //    (If fromIndex is undefined, this step produces the value 0.)
                var n = fromIndex | 0;
 
-               // 5. If n ≥ 0, then
+               // 5. If n >= 0, then
                //  a. Let k be n.
                // 6. Else n < 0,
                //  a. Let k be len + n.
