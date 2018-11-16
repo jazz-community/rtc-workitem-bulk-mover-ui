@@ -27,6 +27,7 @@ const BulkMoverComponent = Vue.extend({
          serviceVersion: "<unknown>",
          wiInput: '',
          targetProjectArea: '',
+         skipEmail: false,
          targetTypes: [],
          attributeDefinitions: [],
          query: null,
@@ -316,16 +317,17 @@ const BulkMoverComponent = Vue.extend({
       },
 
       moveWorkItems(previewOnly) {
-         this.tryMove(this.workItems, this.targetProjectArea, this.attributeDefinitions, this.typeMap, previewOnly);
+         this.tryMove(this.workItems, this.targetProjectArea, this.attributeDefinitions, this.typeMap, this.skipEmail, previewOnly);
       },
 
-      tryMove(workItems, projectArea, attributeDefinitions, typeMapping, previewOnly) {
+      tryMove(workItems, projectArea, attributeDefinitions, typeMapping, skipEmail, previewOnly) {
          this.loadInProgress = true;
          const data = {
             targetProjectArea: projectArea,
             workItems: workItems,
             mapping: attributeDefinitions,
             typeMapping: typeMapping.map((x) => { return {source: x.source.id, target: x.targetId}; }),
+            skipEmail: skipEmail,
             previewOnly: previewOnly,
          };
          const base = JazzHelpers.getBaseUri();

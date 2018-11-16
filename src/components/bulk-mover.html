@@ -49,7 +49,14 @@
                </div>
 
                <button v-if="!showMigrator" v-bind:class="{ disabled: (!areAllTypesMapped || isDataMissing || attributeDefinitions.length > 0), loading: isQueryLoading }" class="ui button primary" v-on:click="moveWorkItems(true)">Preview Value Mappings</button>
-               <button v-else v-bind:class="{ disabled: (!areAllTypesMapped || isDataMissing || !showMigrator), loading: isQueryLoading }" class="ui button primary" v-on:click="moveWorkItems(false)">Move {{countSelected}} Work Items</button>
+               <template v-else>
+                  <span class="ui checkbox">
+                     <input type="checkbox" name="skipMail" v-model="skipEmail">
+                     <label>Suppress Work Item Email notifications on Move</label>
+                  </span>
+                  <br/><br/>
+                  <button v-bind:class="{ disabled: (!areAllTypesMapped || isDataMissing || !showMigrator), loading: isQueryLoading }" class="ui button primary" v-on:click="moveWorkItems(false)">Move {{countSelected}} Work Items</button>
+               </template>
 
                <div v-if="moveSuccessful === false && attributeDefinitions.length > 0" class="ui warning message">
                   <div class="header">Your Work Items are not moved yet.</div>
