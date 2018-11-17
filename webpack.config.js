@@ -12,7 +12,7 @@ module.exports = (env) => {
 
    const config = {
       entry: {
-         BulkMover: ['babel-polyfill', './src/main'],
+         BulkMover: ['@babel/polyfill', './src/main'],
          Semantic: semanticPattern,
       },
       output: {
@@ -42,7 +42,7 @@ module.exports = (env) => {
             exclude: /node_modules/,
             loader: 'babel-loader',
             query: {
-               presets: ['env'],
+               presets: ['@babel/preset-env'],
             },
          }, {
             // integrate all HTML into the JS Bundle
