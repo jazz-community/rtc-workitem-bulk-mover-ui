@@ -1,15 +1,15 @@
 {
   "name": "rtc-workitem-bulk-mover-ui",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "RTC Work-Item Bulk Mover",
   "main": "src/main.js",
   "dependencies": {
-    "dijit": "1.8.x",
-    "dojo": "1.8.x"
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "css-loader": "0.28.11",
     "dojo-module-wrapper-webpack-plugin": "^0.8.0",

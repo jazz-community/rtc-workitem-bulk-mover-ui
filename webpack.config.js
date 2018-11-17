@@ -1,10 +1,7 @@
 const webpack = require('webpack');
-const DojoModuleWrapperPlugin = require('dojo-module-wrapper-webpack-plugin');
 const JazzUpdateSitePlugin = require('jazz-update-site-webpack-plugin');
 const packageJson = require('./package.json');
 const glob = require('glob');
-
-const baseUrl = 'net.jazz.ajax._contextRoot + "/web/com.siemens.bt.jazz.ui.WorkItemBulkMover/ui/"';
 
 module.exports = (env) => {
    env && env.buildUUID && console.info(`Build UUID is passed along: '${env.buildUUID}'`);
@@ -15,12 +12,12 @@ module.exports = (env) => {
 
    const config = {
       entry: {
-         BulkMover: './src/main',
+         BulkMover: ['babel-polyfill', './src/main'],
          Semantic: semanticPattern,
       },
       output: {
          // wrap external dependencies with an AMD loader
-         libraryTarget: 'amd',
+         libraryTarget: 'umd',
          filename: 'resources/ui/[name]Bundle.js',
       },
       module: {
@@ -81,14 +78,6 @@ module.exports = (env) => {
             'window.jQuery': 'jquery',
          }),
 
-         // modify compiled bundle in a way that Jazz will be able to parse and execute it
-         new DojoModuleWrapperPlugin({
-            BulkMover: {
-               baseUrl: baseUrl,
-               moduleName: 'BulkMoverBundle',
-            },
-         }),
-
          // if set to production, pack the plugin as Jazz compatible update-site package
          new JazzUpdateSitePlugin({
             appType: 'ccm',
@@ -125,19 +114,6 @@ module.exports = (env) => {
                version: version,
             },
          }),
-      ],
-
-      externals: [
-         // exclude dojo and dijit from bundling, use dojo and dijit provided by Jazz instead
-         (context, request, callback) => {
-            if (/^dojo/.test(request) ||
-               /^dijit/.test(request) ||
-               /^com.ibm.team/.test(request)
-            ) {
-               return callback(null, `amd ${request}`);
-            }
-            return callback();
-         },
       ],
    };
 

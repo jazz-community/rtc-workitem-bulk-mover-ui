@@ -1,5 +1,4 @@
 import Utils from './Utils';
-import 'com.ibm.team.workitem.viewlets.web.ui.internal.utils.WorkItemQueryChooser';
 
 /**
  * Helper class for interaction with the Jazz UI

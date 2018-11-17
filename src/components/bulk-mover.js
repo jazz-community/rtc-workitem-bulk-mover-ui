@@ -1,12 +1,9 @@
 import Vue from 'vue';
-import xhr from 'dojo/request/xhr';
 import template from './bulk-mover.html';
 import style from './bulk-mover.css';
 import JazzHelpers from './jazz-helpers/jazz-helpers';
 import Utils from './jazz-helpers/Utils';
 import '../styles/ui.css';
-import parser from 'dojo/parser';
-import dom from 'dojo/dom';
 import packageJson from '../../package.json';
 import WorkItemTableComponent from './wi-table/wi-table';
 import WorkItemMigratorComponent from './wi-migrator/wi-migrator';
@@ -100,10 +97,6 @@ const BulkMoverComponent = Vue.extend({
       this.getServiceVersion();
    },
 
-   mounted() {
-      parser.parse(dom.byId('WIMoveArea'));
-   },
-
    computed: {
       workItems: function() {
          return this.wiTable.gridData
@@ -111,7 +104,6 @@ const BulkMoverComponent = Vue.extend({
             .map((x) => x.id);
       },
       sourceTypes: function() {
-         this.polyfillsForIE();
          var srcTypes = this.wiTable.gridData
             .filter((x) => x.checked)
             .map((x) => x.type)
@@ -175,9 +167,11 @@ const BulkMoverComponent = Vue.extend({
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/info`;
-         xhr.get(url, {
+         fetch(url, {
             handleAs: 'json',
             headers: {"Accept": "application/json"}
+         }).then(function (response) {
+            return response.json()
          }).then((retData) => {
             this.serviceVersion = retData.version;
          });
@@ -188,9 +182,11 @@ const BulkMoverComponent = Vue.extend({
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/project-areas`;
-         xhr.get(url, {
+         fetch(url, {
             handleAs: 'json',
             headers: {"Accept": "application/json"}
+         }).then(function (response) {
+            return response.json()
          }).then((retData) => {
             this.projectAreas = retData;
             this.loadInProgress = false;
@@ -206,9 +202,11 @@ const BulkMoverComponent = Vue.extend({
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/types?project-area=${projectArea}`;
-         xhr.get(url, {
+         fetch(url, {
             handleAs: 'json',
             headers: {"Accept": "application/json"}
+         }).then(function (response) {
+            return response.json()
          }).then((retData) => {
             this.targetTypes = retData;
             this.attributeDefinitions = [];
@@ -263,12 +261,14 @@ const BulkMoverComponent = Vue.extend({
 
       loadNextPage(url, recursive) {
          this.serverError = null;
-         xhr.get(url, {
+         fetch(url, {
             handleAs: 'json',
             headers: {
                "Accept": "application/json",
                "OSLC-Core-Version": "2.0"
             }
+         }).then(function (response) {
+            return response.json()
          }).then((retData) => {
             let queryResult = retData["oslc:results"];
             this.totalCount = retData["oslc:responseInfo"]["oslc:totalCount"];
@@ -305,7 +305,7 @@ const BulkMoverComponent = Vue.extend({
                this.loadNextPage(this.query.nextPage, true);
             }
             this.loadInProgress = false;
-         }, (error) => {
+         }).catch((error) => {
             const errorMsg = error["message"];
             if(errorMsg) {
                this.serverError = errorMsg;
@@ -334,12 +334,15 @@ const BulkMoverComponent = Vue.extend({
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/move`;
          this.serverError = null;
-         xhr.post(url, {
-            data: JSON.stringify(data),
+         fetch(url, {
+            method: "POST",
+            body: JSON.stringify(data),
             handleAs: 'json',
             headers: {
                'Content-Type': 'json',
             },
+         }).then(function (response) {
+            return response.json()
          }).then((retData) => {
             if(retData.successful && retData.mapping) {
                this.moveSuccessful = true;
@@ -356,114 +359,12 @@ const BulkMoverComponent = Vue.extend({
                }
             }
             this.loadInProgress = false;
-         }, (err) => {
+         }).catch((err) => {
             this.moveSuccessful = false;
             this.attributeDefinitions = [];
             this.serverError = err.message;
             this.loadInProgress = false;
-         }, (evt) => {
-            // Handle a progress event from the request if browser supports XHR2
          });
-      },
-
-      polyfillsForIE() {
-         // fixes: https://github.com/jazz-community/rtc-workitem-bulk-mover-ui/issues/11
-         // source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
-         if (!Array.prototype.findIndex) {
-            Object.defineProperty(Array.prototype, 'findIndex', {
-              value: function(predicate) {
-               // 1. Let O be ? ToObject(this value).
-                if (this == null) {
-                  throw new TypeError('"this" is null or not defined');
-                }
-
-                var o = Object(this);
-
-                // 2. Let len be ? ToLength(? Get(O, "length")).
-                var len = o.length >>> 0;
-
-                // 3. If IsCallable(predicate) is false, throw a TypeError exception.
-                if (typeof predicate !== 'function') {
-                  throw new TypeError('predicate must be a function');
-                }
-
-                // 4. If thisArg was supplied, let T be thisArg; else let T be undefined.
-                var thisArg = arguments[1];
-
-                // 5. Let k be 0.
-                var k = 0;
-
-                // 6. Repeat, while k < len
-                while (k < len) {
-                  // a. Let Pk be ! ToString(k).
-                  // b. Let kValue be ? Get(O, Pk).
-                  // c. Let testResult be ToBoolean(? Call(predicate, T, << kValue, k, O >>)).
-                  // d. If testResult is true, return k.
-                  var kValue = o[k];
-                  if (predicate.call(thisArg, kValue, k, o)) {
-                    return k;
-                  }
-                  // e. Increase k by 1.
-                  k++;
-                }
-
-                // 7. Return -1.
-                return -1;
-              }
-            });
-         }
-
-         // https://tc39.github.io/ecma262/#sec-array.prototype.includes
-         if (!Array.prototype.includes) {
-            Object.defineProperty(Array.prototype, 'includes', {
-            value: function(searchElement, fromIndex) {
-
-               if (this == null) {
-                  throw new TypeError('"this" is null or not defined');
-               }
-
-               // 1. Let O be ? ToObject(this value).
-               var o = Object(this);
-
-               // 2. Let len be ? ToLength(? Get(O, "length")).
-               var len = o.length >>> 0;
-
-               // 3. If len is 0, return false.
-               if (len === 0) {
-                  return false;
-               }
-
-               // 4. Let n be ? ToInteger(fromIndex).
-               //    (If fromIndex is undefined, this step produces the value 0.)
-               var n = fromIndex | 0;
-
-               // 5. If n >= 0, then
-               //  a. Let k be n.
-               // 6. Else n < 0,
-               //  a. Let k be len + n.
-               //  b. If k < 0, let k be 0.
-               var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
-
-               function sameValueZero(x, y) {
-                  return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
-               }
-
-               // 7. Repeat, while k < len
-               while (k < len) {
-                  // a. Let elementK be the result of ? Get(O, ! ToString(k)).
-                  // b. If SameValueZero(searchElement, elementK) is true, return true.
-                  if (sameValueZero(o[k], searchElement)) {
-                  return true;
-                  }
-                  // c. Increase k by 1.
-                  k++;
-               }
-
-               // 8. Return false
-               return false;
-            }
-            });
-         }
       },
    },
 });

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import 'whatwg-fetch'; // IE support for fetch
 
 import BulkMoverComponent from './components/bulk-mover';
 import {selectify} from './filters/index';
