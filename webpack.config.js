@@ -18,6 +18,7 @@ module.exports = (env) => {
       output: {
          // wrap external dependencies with an AMD loader
          libraryTarget: 'umd',
+         path: __dirname,
          filename: 'resources/ui/[name]Bundle.js',
       },
       module: {
