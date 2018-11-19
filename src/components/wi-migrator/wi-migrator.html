@@ -72,7 +72,7 @@
                                  <select v-else @change="subChanged(attrDef.identifier, valMap.oldValue.identifier, affected.workItem.id, affected.chosen)" v-model="affected.chosen">
                                     <option selected value=""></option>
                                     <option style="width: 90%" :value="val.identifier" :id="val.identifier" v-for="val in valMap.allowedValues">
-                                       {{hierarchify(val.displayName)}}
+                                       {{createHierarchicalDisplayName(val)}}
                                     </option>
                                  </select>
                                  <span v-if="affected.isRequired" data-tooltip="This attribute is required by the target project area.">
