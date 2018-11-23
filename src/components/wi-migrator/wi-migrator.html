@@ -29,7 +29,13 @@
                      </span>
                   </td>
                   <td style="width: 44%">
-                     <input v-if="attrDef.isPrimitive" style="width: 86%" v-bind:style="{color: isMulti(valMap.chosen) ? 'orange' : 'black'}" @change="topChanged(attrDef.identifier, '', valMap.chosen)" v-model="valMap.chosen"></input>
+                     <select v-if="attrDef.isPrimitive && typeof valMap.oldValue.displayName === 'boolean'" style="width: 86%" v-bind:style="{color: isMulti(valMap.chosen) ? 'orange' : 'black'}" @change="topChanged(attrDef.identifier, valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen">
+                        <option v-if="valMap.affectedWorkItems.length > 1" disabled value="[Multiple Values Selected...]">[Multiple Values Selected...]</option>
+                        <option v-bind:value="true">true</option>
+                        <option v-bind:value="false">false</option>
+                     </select>
+                     <input v-else-if="attrDef.isPrimitive && typeof valMap.oldValue.displayName === 'number'" style="width: 86%" @change="topChanged(attrDef.identifier, valMap.oldValue.identifier, valMap.chosen)" v-model.number="valMap.chosen" type="number"></input>
+                     <input v-else-if="attrDef.isPrimitive" style="width: 86%" v-bind:style="{color: isMulti(valMap.chosen) ? 'orange' : 'black'}" @change="topChanged(attrDef.identifier, valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen"></input>
                      <span v-else-if="valMap.allowedValues.length == 0 && valMap.error" style="width: 86%; color: red; display: inline-block;">{{valMap.error}}</span>
                      <select v-else style="width: 86%" v-bind:style="{color: isMulti(valMap.chosen) ? 'orange' : 'black'}" @change="topChanged(attrDef.identifier, valMap.oldValue.identifier, valMap.chosen)" v-model="valMap.chosen">
                         <option selected value=""></option>
@@ -67,9 +73,14 @@
                         <tbody>
                            <tr v-for="affected in valMap.affectedWorkItems">
                               <td style="width: 46%">
-                                 <input v-if="attrDef.isPrimitive" style="width: 86%"  @change="subChanged(attrDef.identifier, '', affected.workItem.id, affected.chosen)" v-model="affected.chosen"></input>
+                                 <select v-if="attrDef.isPrimitive && typeof valMap.oldValue.displayName === 'boolean'" style="width: 86%" v-bind:style="{color: isMulti(valMap.chosen) ? 'orange' : 'black'}" @change="subChanged(attrDef.identifier, valMap.oldValue.identifier, affected.chosen)" v-model="affected.chosen">
+                                    <option v-bind:value="true">true</option>
+                                    <option v-bind:value="false">false</option>
+                                 </select>                                 
+                                 <input v-else-if="attrDef.isPrimitive && typeof valMap.oldValue.displayName === 'number'" style="width: 86%" @change="subChanged(attrDef.identifier, valMap.oldValue.identifier, affected.chosen)" v-model.number="affected.chosen" type="number"></input>
+                                 <input v-else-if="attrDef.isPrimitive" style="width: 86%" @change="subChanged(attrDef.identifier, valMap.oldValue.identifier, affected.chosen)" v-model="affected.chosen"></input>
                                  <span v-else-if="valMap.allowedValues.length == 0 && valMap.error" style="width: 86%; color: red; display: inline-block;">{{valMap.error}}</span>
-                                 <select v-else @change="subChanged(attrDef.identifier, valMap.oldValue.identifier, affected.workItem.id, affected.chosen)" v-model="affected.chosen">
+                                 <select v-else @change="subChanged(attrDef.identifier, valMap.oldValue.identifier, affected.chosen)" v-model="affected.chosen">
                                     <option selected value=""></option>
                                     <option style="width: 90%" :value="val.identifier" :id="val.identifier" v-for="val in valMap.allowedValues">
                                        {{createHierarchicalDisplayName(val)}}

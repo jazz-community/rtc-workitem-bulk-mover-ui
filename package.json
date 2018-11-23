@@ -1,6 +1,6 @@
 {
   "name": "rtc-workitem-bulk-mover-ui",
-  "version": "1.4.7",
+  "version": "1.5.0",
   "description": "RTC Work-Item Bulk Mover",
   "main": "src/main.js",
   "dependencies": {

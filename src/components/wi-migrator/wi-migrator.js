@@ -51,7 +51,7 @@ const WorkItemMigratorComponent = Vue.extend({
          });
       },
 
-      subChanged(attrDefId, attrId, workItemId, chosen) {
+      subChanged(attrDefId, attrId, chosen) {
          this.attributeDefinitions.forEach(attrDef => {
             if(attrDef.identifier === attrDefId) {
                attrDef.valueMappings.forEach(valMap => {
