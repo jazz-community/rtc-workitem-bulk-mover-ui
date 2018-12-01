@@ -1,11 +1,11 @@
+*.zip
 .classpath
 .jazzignore
 .project
 .settings
 bin
 deployment-properties.ini
+dist
 jbe-build-wrapper.xml
 node_modules
 resources/ui/**
-*.zip
-dist
