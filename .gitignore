@@ -8,3 +8,4 @@ jbe-build-wrapper.xml
 node_modules
 resources/ui/**
 *.zip
+dist
