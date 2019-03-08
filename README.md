@@ -1,4 +1,5 @@
 [![travis-svg][travis-svg]][travis]
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjazz-community%2Frtc-workitem-bulk-mover-ui.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjazz-community%2Frtc-workitem-bulk-mover-ui?ref=badge_shield)
 
 # Work Item Bulk Mover Plugin for RTC
 While RTC supports to move a single Work Item from one project area to another, it lacks the capability of doing so for a bunch of Work Items at once. This plug-in enables users of web interface to move a selected number of Work Items from one project area to another, based on a query selection.
@@ -63,3 +64,6 @@ Licensed under the [MIT](https://github.com/jazz-community/rtc-workitem-bulk-mov
 
 [travis-svg]: https://travis-ci.org/jazz-community/rtc-workitem-bulk-mover-ui.svg?branch=master
 [travis]: https://travis-ci.org/jazz-community/rtc-workitem-bulk-mover-ui
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjazz-community%2Frtc-workitem-bulk-mover-ui.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjazz-community%2Frtc-workitem-bulk-mover-ui?ref=badge_large)
