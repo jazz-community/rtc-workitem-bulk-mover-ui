@@ -19,6 +19,7 @@
          </thead>
          <tbody>
             <template v-for="valMap in attrDef.valueMappings">
+               <template v-if="valMap.oldValue !== null">
                <tr>
                   <td style="width: 4%">
                      <span v-if="valMap.showDetails && valMap.affectedWorkItems.length > 1" data-tooltip="Click to collapse list" data-position="top left">
@@ -97,6 +98,13 @@
                            </tr>
                         </tbody>
                      </table>
+                  </td>
+               </tr>
+               </template>
+               <tr v-else style="color: red">
+                  <td></td>
+                  <td colspan="3">
+                        Unable to read old value!
                   </td>
                </tr>
             </template>
