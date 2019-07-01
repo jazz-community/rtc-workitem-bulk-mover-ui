@@ -36,7 +36,7 @@ define([
 			this.addTitle(i18n.sectionBulkMove, this._insertIndex++);
 			this.addItemByArgs({
 				label: i18n.actionBulkMoveWorkItems,
-				icon: String(require.toUrl(imagePath + "wibm-icon.png")),
+				icon: String(require.toUrl(imagePath + "font-awesome_4.7.0_exchange_16x16.png")),
 				href: action + "move",
 				insertIndex: this._insertIndex++
 			});
