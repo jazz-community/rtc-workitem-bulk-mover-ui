@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: BT AddOns Page Extension
+Bundle-Name: Add-ons Page Extension
 Bundle-SymbolicName: com.siemens.bt.jazz.ui.WorkItemBulkMover.menuProvider;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Vendor: SIEMENS
+Bundle-Vendor: Siemens Smart Infrastructure, Building Products
 Bundle-Localization: plugin
 Require-Bundle: net.jazz.ajax;bundle-version="2.2.2000",
  com.ibm.team.workitem.web,

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: RTC Work Item Bulk Mover
 Bundle-SymbolicName: com.siemens.bt.jazz.ui.WorkItemBulkMover;singleton:=true
 Bundle-Version: 1.5.0
-Bundle-Vendor: Siemens Building Technologies
+Bundle-Vendor: Siemens Smart Infrastructure, Building Products
 Bundle-Localization: plugin
 Require-Bundle: net.jazz.ajax;bundle-version="2.2.2000",
- com.siemens.bt.jazz.services.WorkItemBulkMover;bundle-version="1.5.0"
+ com.siemens.bt.jazz.services.WorkItemBulkMover;bundle-version="1.5.2"
