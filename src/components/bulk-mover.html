@@ -52,7 +52,12 @@
                <template v-else>
                   <span class="ui checkbox">
                      <input type="checkbox" name="skipMail" v-model="skipEmail">
-                     <label>Suppress Work Item Email notifications on Move</label>
+                     <label>Suppress Work Item Email change notification</label>
+                  </span>
+                  <br/><br/>
+                  <span class="ui checkbox">
+                     <input type="checkbox" name="removeRank" v-model="removeRank">
+                     <label>Remove Rank (recommended)</label>
                   </span>
                   <br/><br/>
                   <button v-bind:class="{ disabled: (!areAllTypesMapped || isDataMissing || !showMigrator), loading: isQueryLoading }" class="ui button primary" v-on:click="moveWorkItems(false)">Move {{countSelected}} Work Items</button>
