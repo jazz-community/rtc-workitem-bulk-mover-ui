@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import axios from 'axios';
 import template from './bulk-mover.html';
 import style from './bulk-mover.css';
 import JazzHelpers from './jazz-helpers/jazz-helpers';
@@ -168,11 +169,8 @@ const BulkMoverComponent = Vue.extend({
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/info`;
-         fetch(url, {
-            handleAs: 'json',
-            headers: {"Accept": "application/json"}
-         }).then(function (response) {
-            return response.json()
+         this.fetchData(url).then(function (response) {
+            return response.data
          }).then((retData) => {
             this.serviceVersion = retData.version;
          });
@@ -183,11 +181,8 @@ const BulkMoverComponent = Vue.extend({
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/project-areas`;
-         fetch(url, {
-            handleAs: 'json',
-            headers: {"Accept": "application/json"}
-         }).then(function (response) {
-            return response.json()
+         this.fetchData(url).then(function (response) {
+            return response.data
          }).then((retData) => {
             this.projectAreas = retData;
             this.loadInProgress = false;
@@ -203,11 +198,8 @@ const BulkMoverComponent = Vue.extend({
          const base = JazzHelpers.getBaseUri();
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/types?project-area=${projectArea}`;
-         fetch(url, {
-            handleAs: 'json',
-            headers: {"Accept": "application/json"}
-         }).then(function (response) {
-            return response.json()
+         this.fetchData(url).then(function (response) {
+            return response.data
          }).then((retData) => {
             this.targetTypes = retData;
             this.attributeDefinitions = [];
@@ -260,16 +252,19 @@ const BulkMoverComponent = Vue.extend({
          this.loadNextPage(url, false);
       },
 
-      loadNextPage(url, recursive) {
-         this.serverError = null;
-         fetch(url, {
-            handleAs: 'json',
+      fetchData(url) {
+         return axios.get(url, {
             headers: {
-               "Accept": "application/json",
+               "Accept": "application/json;charset=utf-8",
                "OSLC-Core-Version": "2.0"
             }
-         }).then(function (response) {
-            return response.json()
+         });
+      },
+
+      loadNextPage(url, recursive) {
+         this.serverError = null;
+         this.fetchData(url).then(function (response) {
+            return response.data
          }).then((retData) => {
             let queryResult = retData["oslc:results"];
             this.totalCount = retData["oslc:responseInfo"]["oslc:totalCount"];
@@ -336,15 +331,13 @@ const BulkMoverComponent = Vue.extend({
          const service = 'com.siemens.bt.jazz.services.WorkItemBulkMover.IWorkItemBulkMoverService';
          const url = `${base}/service/${service}/move`;
          this.serverError = null;
-         fetch(url, {
-            method: "POST",
-            body: JSON.stringify(data),
-            handleAs: 'json',
+         axios.post(url, data, {
             headers: {
+               "Accept": "application/json;charset=utf-8",
                'Content-Type': 'json',
             },
          }).then(function (response) {
-            return response.json()
+            return response.data
          }).then((retData) => {
             if(retData.successful && retData.mapping) {
                this.moveSuccessful = true;
